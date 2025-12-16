@@ -20,7 +20,7 @@ const EditCustomer = () => {
             setMessage(res.data.message);
             reset();
             // ⭐ Navigate back to customer detail
-            navigate(`/customer-deatils/${id}`);
+            navigate(`/customer-details/${id}`);
         } catch (error) {
             setMessage(error.response?.data?.message || "Something went wrong!")
         }

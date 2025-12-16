@@ -63,7 +63,7 @@ export default function CustomerDetails() {
 
           {/* Back Button */}
           <button
-            onClick={() => navigate(`/`)}
+            onClick={() => navigate(`/customers`)}
             className="text-green-600 text-sm hover:underline"
           >
             ← Back

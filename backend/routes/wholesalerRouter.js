@@ -10,7 +10,7 @@ router.get("/wholesalerList", authMiddleware, wholesalerList);
 router.get("/wholesalerDetails/:wholesalerId", authMiddleware, wholesalerDetails);
 router.delete("/deleteWholesaler/:wholesalerId", authMiddleware, deleteWholesaler);
 router.put("/editWholesaler/:wholesalerId", authMiddleware, editWholesaler);
-router.post("/:wholesalerId/transactions", authMiddleware, addTransaction );
+router.post("/:wholesalerId/transactions", authMiddleware, addTransaction);
 router.get("/:wholesalerId/transactions/:transactionId", authMiddleware, transactionDetails);
 router.delete("/:wholesalerId/transactions/:transactionId", authMiddleware, deleteTransaction);
 router.put("/:wholesalerId/transactions/:transactionId", authMiddleware, editTransaction);

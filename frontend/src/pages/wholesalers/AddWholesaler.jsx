@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 const AddWholesaler = () => {
   const navigate = useNavigate();  
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
@@ -14,7 +15,9 @@ const AddWholesaler = () => {
   } = useForm();
 
   const onSubmit=async(data)=>{
+    if(isSubmitting) return;
     try {
+      setIsSubmitting(true);
       const res=await api.post("/wholesalers/add-wholesaler", data);
       setMessage(res.data.message);
       reset();
@@ -93,6 +96,7 @@ const AddWholesaler = () => {
 
     {/* BUTTON */}
     <button
+    disabled={isSubmitting}
       type="submit"
       className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium shadow transition"
     >

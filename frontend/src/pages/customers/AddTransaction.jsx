@@ -10,6 +10,7 @@ const AddTransaction = () => {
   const navigate = useNavigate();   // ⭐ REQUIRED FIX
 
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const {
     register,
@@ -26,7 +27,9 @@ const AddTransaction = () => {
 
   // ⭐ Submit handler
   const onSubmit = async (data) => {
+    if(isSubmitting) return;
     try {
+      setIsSubmitting(true);
       const res = await api.post(`/customers/add-transaction/${id}`, data);
 
       setMessage(res.data.message);
@@ -91,6 +94,7 @@ const AddTransaction = () => {
 
       {/* BUTTON */}
       <button
+      disabled={isSubmitting}
         type="submit"
         className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg shadow transition"
       >

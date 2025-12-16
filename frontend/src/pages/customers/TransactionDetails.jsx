@@ -56,7 +56,7 @@ const TransactionDetails = () => {
 
           {/* Back Button */}
           <button
-            onClick={() => navigate(`/customer-deatils/${customerId}`)}
+            onClick={() => navigate(`/customer-detail/${customerId}`)}
             className="text-green-600 text-sm hover:underline"
           >
             ← Back

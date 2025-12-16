@@ -1,11 +1,13 @@
 import { useForm } from "react-hook-form";
 import api from "../uitls/api";
 import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Signup() {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [message, setMessage] = useState("");
   const [role, setRole] = useState("");
+  const navigate=useNavigate();
 
 
   const onSubmit = async (data) => {
@@ -15,6 +17,7 @@ export default function Signup() {
       setMessage(res.data.message);
       setRole(res.data.roleAssigned);
       reset(); 
+      navigate(`/login`)
     } catch (err) {
       setMessage(err.response?.data?.message || "Something went wrong.");
     }

@@ -2,9 +2,11 @@ import api from "../../uitls/api";
 import { useState, useEffect } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+
 const AddCustomer = () => {
   const navigate = useNavigate();  
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
@@ -14,7 +16,9 @@ const AddCustomer = () => {
   } = useForm();
 
   const onSubmit=async(data)=>{
+    if(isSubmitting) return;
     try {
+      setIsSubmitting(true);
       const res=await api.post("/customers/add-customer", data);
       setMessage(res.data.message);
       reset();
@@ -94,6 +98,7 @@ const AddCustomer = () => {
     {/* BUTTON */}
     <button
       type="submit"
+      disabled={isSubmitting}
       className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium shadow transition"
     >
       Add Customer
