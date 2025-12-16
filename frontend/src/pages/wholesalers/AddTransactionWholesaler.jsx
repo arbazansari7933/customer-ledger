@@ -30,7 +30,7 @@ const AddTransactionWholesaler = () => {
     if(isSubmitting) return;
     try {
       setIsSubmitting(true);
-      const res = await api.post(`http://localhost:5000/api/wholesalers/${id}/transactions`, data);
+      const res = await api.post(`/wholesalers/${id}/transactions`, data);
       setMessage(res.data.message);
 
       reset();
