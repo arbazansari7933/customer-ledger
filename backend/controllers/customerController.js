@@ -58,9 +58,9 @@ export const customerDetails = async (req, res) => {
         if (!customer) {
             res.status(400).json({ message: "Customer not found!" })
         }
-        if (req.user.role != "owner" && customer.createdBy.toString() !== req.user._id.toString()) {
-            return res.status(403).json({ message: "Access denied" });
-        }
+        // if (req.user.role != "owner" && customer.createdBy.toString() !== req.user._id.toString()) {
+        //     return res.status(403).json({ message: "Access denied" });
+        // }
         res.status(200).json(
             {
                 message: "Customer detail fetched successfully",
@@ -85,11 +85,11 @@ export const deleteCustomer = async (req, res) => {
                 }
             )
         }
-        if (req.user.role !== "owner" && customer.createdBy.toString() !== req.user._id.toString()) {
-            res.status(403).json({
-                message: "You are not allowed to delete this customer",
-            })
-        }
+        // if (req.user.role !== "owner" && customer.createdBy.toString() !== req.user._id.toString()) {
+        //     res.status(403).json({
+        //         message: "You are not allowed to delete this customer",
+        //     })
+        // }
         await Customer.findByIdAndDelete(customerId);
         res.status(200).json({
             message: "This customer is deleted! ",
@@ -109,9 +109,9 @@ export const editCustomer = async (req, res) => {
         if (!customer) {
             return res.status(400).json({ message: "Customer not found to update!" });
         }
-        if (req.user.role !== "owner" && customer.createdBy.toString() !== req.user._id.toString()) {
-            return res.status(404).json({ message: "You are not allowed to update this user!" });
-        }
+        // if (req.user.role !== "owner" && customer.createdBy.toString() !== req.user._id.toString()) {
+        //     return res.status(404).json({ message: "You are not allowed to update this user!" });
+        // }
         const updatedCustomer = await Customer.findByIdAndUpdate(
             customerId,
             {
