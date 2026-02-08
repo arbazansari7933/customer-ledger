@@ -29,9 +29,9 @@ export const wholesalerList = async (req, res) => {
     try {
         
         //not an Owner 
-        if (req.user.role != "owner") {
-            return res.status(403).json({ message: "Access denied" });
-        }
+        // if (req.user.role != "owner") {
+        //     return res.status(403).json({ message: "Access denied" });
+        // }
         const wholesalers = await Wholesaler.find().sort({ createdAt: -1 });
 
         res.json({
@@ -53,9 +53,9 @@ export const wholesalerDetails = async (req, res) => {
             res.status(400).json({ message: "wholesaler not found!" })
         }
         //not an owner
-        if (req.user.role !== "owner") {
-            return res.status(403).json({ message: "Access denied" });
-        }
+        // if (req.user.role !== "owner") {
+        //     return res.status(403).json({ message: "Access denied" });
+        // }
         res.status(200).json(
             {
                 message: "wholesaler detail fetched successfully",
@@ -104,9 +104,9 @@ export const editWholesaler = async (req, res) => {
         if (!wholesaler) {
             return res.status(400).json({ message: "wholesaler not found to update!" });
         }
-        if (req.user.role !== "owner") {
-            return res.status(404).json({ message: "You are not allowed to update this user!" });
-        }
+        // if (req.user.role !== "owner") {
+        //     return res.status(404).json({ message: "You are not allowed to update this user!" });
+        // }
         const updatedwholesaler = await Wholesaler.findByIdAndUpdate(
             wholesalerId,
             {

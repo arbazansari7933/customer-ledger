@@ -9,7 +9,7 @@ export default function MainDashboard() {
   <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
 
     <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800 text-center sm:text-left">
-      📘 My Ledger App
+      KGN COLLECTION
     </h1>
 
     {/* Login / Signup */}
