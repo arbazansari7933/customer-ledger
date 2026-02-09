@@ -80,11 +80,11 @@ export const deleteWholesaler = async (req, res) => {
                 }
             )
         }
-        if (req.user.role !== "owner") {
-            return res.status(403).json({
-                message: "You are not allowed to delete this wholesaler",
-            })
-        }
+        // if (req.user.role !== "owner") {
+        //     return res.status(403).json({
+        //         message: "You are not allowed to delete this wholesaler",
+        //     })
+        // }
         await Wholesaler.findByIdAndDelete(wholesalerId);
         res.status(200).json({
             message: "This wholesaler is deleted! ",
