@@ -30,7 +30,7 @@ const AddTransaction = () => {
     if(isSubmitting) return;
     try {
       setIsSubmitting(true);
-      const res = await api.post(`/customers/add-transaction/${id}`, data);
+      const res = await api.post(`/customers/${id}`, data);
 
       setMessage(res.data.message);
 

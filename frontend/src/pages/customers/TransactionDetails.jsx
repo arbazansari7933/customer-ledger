@@ -17,7 +17,7 @@ const TransactionDetails = () => {
   useEffect(() => {
     const fetchDetail = async () => {
       try {
-        const res = await api.get(`/customers/${customerId}/transaction-details/${transactionId}`)
+        const res = await api.get(`/customers/${customerId}/transactions/${transactionId}`)
 
         setData(res.data.transaction);
         setMessage(res.data.message);

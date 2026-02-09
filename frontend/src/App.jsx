@@ -21,6 +21,7 @@ import EditWholesaler from "./pages/wholesalers/EditWholesaler";
 import AddTransactionWholesaler from "./pages/wholesalers/AddTransactionWholesaler";
 import TransactionDetailsWholesaler from "./pages/wholesalers/TransactionDetailsWholesaler";
 import EditTransactionWholesaler from "./pages/wholesalers/EditTransactionWholesaler";
+
 export default function App() {
   return (
     <BrowserRouter>

@@ -16,7 +16,7 @@ const EditCustomer = () => {
 
     const onSubmit = async (data) => {
         try {
-            const res = await api.put(`/customers/update/${id}`, data)
+            const res = await api.put(`/customers/${id}`, data)
             setMessage(res.data.message);
             reset();
             // ⭐ Navigate back to customer detail
@@ -27,7 +27,7 @@ const EditCustomer = () => {
     }
     useEffect(() => {
         const load = async () => {
-            const res = await api.get(`/customers/customerdetail/${id}`,);
+            const res = await api.get(`/customers/${id}`,);
             reset(res.data.customer);   // ⭐ THE MAGIC LINE
         };
 

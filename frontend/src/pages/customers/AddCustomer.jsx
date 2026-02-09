@@ -19,7 +19,7 @@ const AddCustomer = () => {
     if(isSubmitting) return;
     try {
       setIsSubmitting(true);
-      const res=await api.post("/customers/add-customer", data);
+      const res=await api.post("/customers", data);
       setMessage(res.data.message);
       reset();
       navigate(`/customers`);

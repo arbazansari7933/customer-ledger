@@ -17,7 +17,7 @@ export default function CustomerDetails() {
   useEffect(() => {
     const fetchDetail = async () => {
       try {
-        const res = await api.get(`/customers/customerdetail/${id}`);
+        const res = await api.get(`/customers/${id}`);
         setCustomer(res.data.customer);
       } catch (error) {
         console.log("DETAIL ERROR:", error.response?.data || error.message);
@@ -46,7 +46,7 @@ export default function CustomerDetails() {
       return;
     }
     try {
-      const res = await api.delete(`/customers/delete/${id}`);
+      const res = await api.delete(`/customers/${id}`);
       navigate(`/customers`);
     } catch (error) {
       console.log(error.response?.data?.message || "Something went wrong");

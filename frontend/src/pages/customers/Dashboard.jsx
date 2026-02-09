@@ -14,7 +14,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchCustomer = async () => {
             try {
-                const res = await api.get("/customers/list");
+                const res = await api.get("/customers");
                 setData(res.data.customers);
                 setMessage(res.data.message);
             } catch (error) {

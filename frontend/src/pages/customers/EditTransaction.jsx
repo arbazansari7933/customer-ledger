@@ -20,7 +20,7 @@ const EditTransaction = () => {
 
     const onSubmit = async (data) => {
         try {
-            const res = await api.put(`/customers/${customerId}/transaction/${transactionId}`, data);
+            const res = await api.put(`/customers/${customerId}/transactions/${transactionId}`, data);
             setMessage(res.data.message);
             reset();
             // ⭐ Navigate back to transaction detail
