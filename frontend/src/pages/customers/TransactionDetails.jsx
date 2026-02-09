@@ -35,7 +35,7 @@ const TransactionDetails = () => {
       return;
     }
     try {
-      const res = await api.delete(`/customers/${customerId}/transaction/${transactionId}`);
+      const res = await api.delete(`/customers/${customerId}/transactions/${transactionId}`);
       navigate(`/customer-details/${customerId}`)
     } catch (error) {
       console.log(error.response?.data?.message || "Something went wrong");

@@ -1,7 +1,5 @@
 import express from "express";
 import authMiddleware from "../middlewares/authMiddleware.js";
-import Customer from "../models/Customer.js";
-import User from "../models/User.js";
 
 import { addCustomer, customerList , customerDetails, deleteCustomer, editCustomer} from "../controllers/customerController.js";
 import { addTransaction, transactionDetails, deleteTransaction, editTransaction} from "../controllers/customerController.js";

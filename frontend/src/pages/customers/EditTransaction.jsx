@@ -34,14 +34,14 @@ const EditTransaction = () => {
     useEffect(() => {
         const load = async () => {
             try {
-                const res = await api.get(`/customers/${customerId}/transaction-details/${transactionId}`);
+                const res = await api.get(`/customers/${customerId}/transactions/${transactionId}`);
                 // reset(res.data.customer);   // ⭐ THE MAGIC LINE
                 const tx = res.data.transaction;
                 setValue("amount", tx.amount)
                 setValue("note", tx.note)
                 setValue("type", tx.type)
             } catch (error) {
-                console.log("ERROR →", err);
+                console.log("ERROR →", error);
 
             }
 
