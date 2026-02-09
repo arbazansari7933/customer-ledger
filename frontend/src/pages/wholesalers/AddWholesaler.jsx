@@ -18,7 +18,7 @@ const AddWholesaler = () => {
     if(isSubmitting) return;
     try {
       setIsSubmitting(true);
-      const res=await api.post("/wholesalers/add-wholesaler", data);
+      const res=await api.post("/wholesalers", data);
       setMessage(res.data.message);
       reset();
       navigate(`/wholesalers`);

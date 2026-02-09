@@ -14,7 +14,7 @@ const WholesalerDashboard = () => {
     useEffect(() => {
         const fetchWholesaler = async () => {
             try {
-                const res = await api.get("/wholesalers/wholesalerList");
+                const res = await api.get("/wholesalers");
                 setData(res.data.wholesalers);
                 setMessage(res.data.message);
             } catch (error) {

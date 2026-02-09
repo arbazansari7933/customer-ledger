@@ -16,7 +16,7 @@ const EditWholesaler = () => {
 
     const onSubmit = async (data) => {
         try {
-            const res = await api.put(`/wholesalers/editWholesaler/${id}`, data);
+            const res = await api.put(`/wholesalers/${id}`, data);
             setMessage(res.data.message);
             reset();
             // ⭐ Navigate back to wholesaler detail

@@ -5,11 +5,12 @@ import { addTransaction, transactionDetails , deleteTransaction, editTransaction
 
 const router = express.Router();
 
-router.post("/add-wholesaler", authMiddleware, addWholesaler);
-router.get("/wholesalerList", authMiddleware, wholesalerList);
-router.get("/wholesalerDetails/:wholesalerId", authMiddleware, wholesalerDetails);
-router.delete("/deleteWholesaler/:wholesalerId", authMiddleware, deleteWholesaler);
-router.put("/editWholesaler/:wholesalerId", authMiddleware, editWholesaler);
+router.post("/", authMiddleware, addWholesaler);
+router.get("/", authMiddleware, wholesalerList);
+router.get("/:wholesalerId", authMiddleware, wholesalerDetails);
+router.delete("/:wholesalerId", authMiddleware, deleteWholesaler);
+router.put("/:wholesalerId", authMiddleware, editWholesaler);
+
 router.post("/:wholesalerId/transactions", authMiddleware, addTransaction);
 router.get("/:wholesalerId/transactions/:transactionId", authMiddleware, transactionDetails);
 router.delete("/:wholesalerId/transactions/:transactionId", authMiddleware, deleteTransaction);

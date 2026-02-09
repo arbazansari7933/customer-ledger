@@ -17,7 +17,7 @@ export default function WholesalerDetails() {
     const fetchDetail = async () => {
       try {
         const res = await api.get(
-          `/wholesalers/wholesalerDetails/${id}`);
+          `/wholesalers/${id}`);
 
         setWholesaler(res.data.wholesaler);
       } catch (error) {
@@ -53,7 +53,7 @@ export default function WholesalerDetails() {
       return;
     }
     try {
-      const res = await api.delete(`/wholesalers/deleteWholesaler/${id}`);
+      const res = await api.delete(`/wholesalers/${id}`);
       navigate(`/wholesalers`);
     } catch (error) {
       console.log(error.response?.data?.message || "Something went wrong");
