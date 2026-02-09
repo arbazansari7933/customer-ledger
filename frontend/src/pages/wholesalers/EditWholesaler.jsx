@@ -27,7 +27,7 @@ const EditWholesaler = () => {
     }
     useEffect(() => {
         const load = async () => {
-            const res = await api.get(`/wholesalers/wholesalerDetails/${id}`);
+            const res = await api.get(`/wholesalers/${id}`);
             reset(res.data.wholesaler);   // ⭐ THE MAGIC LINE
         };
 
