@@ -54,10 +54,13 @@ export const customerList = async (req, res) => {
 export const customerDetails = async (req, res) => {
     try {
         const { customerId } = req.params;
+        console.log("ID received:", customerId);
         const customer = await Customer.findById(customerId);
+        console.log("customer : " ,customer)
         if (!customer) {
-            res.status(400).json({ message: "Customer not found!" })
+            return res.status(400).json({ message: "Customer not found!" })
         }
+        
         // if (req.user.role != "owner" && customer.createdBy.toString() !== req.user._id.toString()) {
         //     return res.status(403).json({ message: "Access denied" });
         // }
@@ -209,11 +212,11 @@ export const deleteTransaction=async(req, res)=>{
             }
           )
         }
-        if (req.user.role !== "owner" && customer.createdBy.toString() !== req.user._id.toString()) {
-          res.status(403).json({
-            message: "You are not allowed to delete this customer's transaction",
-        })
-        }
+        // if (req.user.role !== "owner" && customer.createdBy.toString() !== req.user._id.toString()) {
+        //   res.status(403).json({
+        //     message: "You are not allowed to delete this customer's transaction",
+        // })
+        // }
         //remove transaction from array
         customer.transaction = customer.transaction.filter((t) => t._id.toString() !== transactionId);
         // recalculate balance
@@ -240,11 +243,11 @@ export const editTransaction=async(req, res)=>{
         }
       )
     }
-    if (req.user.role !== "owner" && customer.createdBy.toString() !== req.user._id.toString()) {
-      res.status(403).json({
-        message: "You are not allowed to delete this customer's transaction",
-      })
-    }
+    // if (req.user.role !== "owner" && customer.createdBy.toString() !== req.user._id.toString()) {
+    //   res.status(403).json({
+    //     message: "You are not allowed to delete this customer's transaction",
+    //   })
+    // }
     const index=customer.transaction.findIndex((t)=>t._id.toString()===transactionId);
     if(index===-1){
       return res.status(404).json({message: "Transaction not found"});

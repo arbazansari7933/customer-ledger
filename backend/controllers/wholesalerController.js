@@ -33,7 +33,7 @@ export const wholesalerList = async (req, res) => {
         //     return res.status(403).json({ message: "Access denied" });
         // }
         const wholesalers = await Wholesaler.find().sort({ createdAt: -1 });
-
+        console.log("TOTAL WHOLESALERS:", wholesalers.length);   // 👈 ADD HERE
         res.json({
             message: "wholesaler fetched successfully",
             wholesalers,
@@ -50,7 +50,7 @@ export const wholesalerDetails = async (req, res) => {
         const { wholesalerId } = req.params;
         const wholesaler = await Wholesaler.findById(wholesalerId);
         if (!wholesaler) {
-            res.status(400).json({ message: "wholesaler not found!" })
+            return res.status(400).json({ message: "wholesaler not found!" })
         }
         //not an owner
         // if (req.user.role !== "owner") {
@@ -206,11 +206,11 @@ export const deleteTransaction=async(req, res)=>{
             }
           )
         }
-        if (req.user.role !== "owner") {
-          res.status(403).json({
-            message: "You are not allowed to delete this wholesaler's transaction",
-        })
-        }
+        // if (req.user.role !== "owner") {
+        //   res.status(403).json({
+        //     message: "You are not allowed to delete this wholesaler's transaction",
+        // })
+        // }
         //remove transaction from array
         wholesaler.transaction = wholesaler.transaction.filter((t) => t._id.toString() !== transactionId);
         // recalculate balance
@@ -237,11 +237,11 @@ export const editTransaction=async(req, res)=>{
         }
       )
     }
-    if (req.user.role !== "owner" && wholesaler.createdBy.toString() !== req.user._id.toString()) {
-      res.status(403).json({
-        message: "You are not allowed to delete this wholesaler's transaction",
-      })
-    }
+    // if (req.user.role !== "owner" && wholesaler.createdBy.toString() !== req.user._id.toString()) {
+    //   res.status(403).json({
+    //     message: "You are not allowed to delete this wholesaler's transaction",
+    //   })
+    // }
     const index=wholesaler.transaction.findIndex((t)=>t._id.toString()===transactionId);
     if(index===-1){
       return res.status(404).json({message: "Transaction not found"});

@@ -6,6 +6,7 @@ import TransactionCard from "../../components/TransactionCard";
 export default function CustomerDetails() {
 
   const { id } = useParams(); // customerId
+  console.log("PARAM ID:", id);
   const navigate = useNavigate();
 
   const [customer, setCustomer] = useState(null);
