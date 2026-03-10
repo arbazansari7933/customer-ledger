@@ -22,6 +22,11 @@ import AddTransactionWholesaler from "./pages/wholesalers/AddTransactionWholesal
 import TransactionDetailsWholesaler from "./pages/wholesalers/TransactionDetailsWholesaler";
 import EditTransactionWholesaler from "./pages/wholesalers/EditTransactionWholesaler";
 
+import BillsDashboard from "./pages/bills/BillsDashboard";
+import BillDetails from "./pages/bills/BillDetails";
+import AddBill from "./pages/bills/AddBill";
+import BillPrint from "./pages/bills/BillPrint";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -47,8 +52,10 @@ export default function App() {
         <Route path="/wholesaler/transaction-detail/:transactionId" element={<ProtectedRoute><TransactionDetailsWholesaler></TransactionDetailsWholesaler></ProtectedRoute>} />
         <Route path="wholesaler/transaction-detail/edit/:transactionId" element={<ProtectedRoute><EditTransactionWholesaler /></ProtectedRoute>} />
 
-
-
+        <Route path="/bills" element={<ProtectedRoute><BillsDashboard/></ProtectedRoute>} />
+        <Route path="/bill/:id" element={<ProtectedRoute><BillDetails /></ProtectedRoute>} />
+        <Route path="/add-bill" element={<ProtectedRoute><AddBill /></ProtectedRoute>} />
+        <Route path="/bill-print/:id" element={<ProtectedRoute><BillPrint /></ProtectedRoute>} />
         {/* Redirect base route */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>

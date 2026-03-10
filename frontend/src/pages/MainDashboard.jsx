@@ -52,6 +52,14 @@ export default function MainDashboard() {
           <p className="font-semibold text-gray-700 mt-1">Wholesalers</p>
         </Link>
 
+        <Link
+          to="/bills"
+          className="bg-white shadow-sm rounded-xl p-5 text-center hover:shadow-md transition"
+        >
+          <p className="text-3xl">🧾</p>
+          <p className="font-semibold text-gray-700 mt-1">Bills</p>
+        </Link>
+
       </div>
 
       {/* SECOND MENU */}

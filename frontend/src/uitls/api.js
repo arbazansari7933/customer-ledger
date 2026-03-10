@@ -2,6 +2,9 @@
 import axios from "axios";
 
 // Create axios instance
+//  baseURL: "https://customer-ledger-backend.onrender.com/api", // your backend URL
+//http://localhost:5000/api
+
 const api = axios.create({
   baseURL: "https://customer-ledger-backend.onrender.com/api", // your backend URL
 });

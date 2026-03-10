@@ -26,7 +26,7 @@ const Dashboard = () => {
 
         fetchCustomer();
     }, []);
-    // console.log("Customer Data:", data);
+    //console.log("Customer Data:", data);
 
     const filtered = data.filter((customer) => {
         const name = (customer.name || "").toLowerCase();
@@ -43,8 +43,8 @@ const Dashboard = () => {
     const totalAdvance = data
         .filter(c => c.balance > 0)
         .reduce((sum, c) => sum + Math.abs(c.balance), 0);
-        console.log("Udhar: ", totalUdhar);
-        console.log("Advance: ", totalAdvance);
+       // console.log("Udhar: ", totalUdhar);
+       // console.log("Advance: ", totalAdvance);
         
 
     return (

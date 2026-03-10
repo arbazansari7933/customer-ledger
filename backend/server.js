@@ -5,7 +5,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import customerRoutes from "./routes/customerRoutes.js";
 import wholesalerRoutes from "./routes/wholesalerRouter.js";
-
+import billRoutes from "./routes/billRoutes.js";
 dotenv.config();
 connectDB();
 
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/wholesalers", wholesalerRoutes);
-
+app.use("/api/bills", billRoutes);
 app.get("/api", (req, res) => {
   res.send("Backend is running!");
 });
