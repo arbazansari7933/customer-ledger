@@ -1,8 +1,10 @@
 import { useState } from "react";
 import api from "../../uitls/api";
 import { useNavigate } from "react-router-dom";
+
 export default function AddBill() {
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
+
   const [customer, setCustomer] = useState({
     name: "",
     phone: "",
@@ -52,8 +54,10 @@ export default function AddBill() {
 
   const due = total - paid;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (isSubmitting) return;
 
     const processedItems = items.map(item => {
       const rate = calculateRate(Number(item.mrp), Number(item.discount));
@@ -75,12 +79,18 @@ export default function AddBill() {
     };
 
     try {
-      const res= api.post("/bills", billData);
       setIsSubmitting(true);
-      navigate(`/bills`);
+
+      const res = await api.post("/bills", billData);
+
       console.log("Bill Created:", res.data);
+
+      navigate("/bills");
+
     } catch (error) {
       console.log(error.response?.data?.message || "Error creating bill");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -134,54 +144,61 @@ export default function AddBill() {
 
             <p className="font-semibold text-gray-700 mb-3">Items</p>
 
+            {/* Header Row */}
+            <div className="grid grid-cols-6 gap-2 mb-2 text-xs font-semibold text-gray-500 border-b pb-2">
+              <div className="px-2">Item</div>
+              <div className="text-center px-2">Qty</div>
+              <div className="text-center px-2">MRP</div>
+              <div className="text-center px-2">Disc%</div>
+              <div className="text-center px-2">Rate</div>
+              <div className="text-right px-2">Amount</div>
+            </div>
+
             {items.map((item, index) => {
 
               const rate = calculateRate(item.mrp, item.discount);
               const amount = calculateAmount(item.qty, rate);
 
               return (
-                <div key={index} className="grid grid-cols-6 gap-2 mb-3">
+                <div key={index} className="grid grid-cols-6 gap-2 mb-3 items-center">
 
                   <input
                     name="itemName"
                     placeholder="Item"
                     value={item.itemName}
                     onChange={(e) => handleItemChange(index, e)}
-                    className="border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-green-400 outline-none"
+                    className="border border-gray-300 rounded-lg p-2 text-sm"
                   />
 
                   <input
                     name="qty"
                     type="number"
-                    placeholder="Qty"
                     value={item.qty}
                     onChange={(e) => handleItemChange(index, e)}
-                    className="border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-green-400 outline-none"
+                    className="border border-gray-300 rounded-lg p-2 text-sm text-center"
                   />
 
                   <input
                     name="mrp"
                     type="number"
-                    placeholder="MRP"
                     value={item.mrp}
                     onChange={(e) => handleItemChange(index, e)}
-                    className="border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-green-400 outline-none"
+                    className="border border-gray-300 rounded-lg p-2 text-sm text-center"
                   />
 
                   <input
                     name="discount"
                     type="number"
-                    placeholder="Disc %"
                     value={item.discount}
                     onChange={(e) => handleItemChange(index, e)}
-                    className="border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-green-400 outline-none"
+                    className="border border-gray-300 rounded-lg p-2 text-sm text-center"
                   />
 
-                  <div className="flex items-center text-sm text-gray-700">
+                  <div className="text-center text-sm text-gray-700 font-mono">
                     ₹{rate.toFixed(2)}
                   </div>
 
-                  <div className="flex items-center font-semibold text-gray-800">
+                  <div className="text-right font-semibold text-gray-800 font-mono">
                     ₹{amount.toFixed(2)}
                   </div>
 
@@ -210,14 +227,17 @@ export default function AddBill() {
                 ₹{total.toFixed(2)}
               </p>
             </div>
+            <div className="flex justify-between text-gray-600 ">
             <p>Paid</p>
+
             <input
               type="number"
               placeholder="Paid Amount"
               value={paid}
               onChange={(e) => setPaid(Number(e.target.value))}
-              className="w-full h-11 px-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-400 outline-none"
+              className="w-3s0 h-8 px-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-400 outline-none"
             />
+            </div>
 
             <div className="flex justify-between">
               <p className="text-gray-600">Due</p>

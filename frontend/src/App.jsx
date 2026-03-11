@@ -3,6 +3,10 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 
+import AboutApp from "./pages/AboutApp";
+import Reports from "./pages/Reports";
+import Settings from "./pages/Settings";
+
 import ProtectedRoute from "./components/ProtectedRoute";
 
 import MainDashboard from "./pages/MainDashboard";
@@ -56,6 +60,13 @@ export default function App() {
         <Route path="/bill/:id" element={<ProtectedRoute><BillDetails /></ProtectedRoute>} />
         <Route path="/add-bill" element={<ProtectedRoute><AddBill /></ProtectedRoute>} />
         <Route path="/bill-print/:id" element={<ProtectedRoute><BillPrint /></ProtectedRoute>} />
+
+        <Route path="/about" element={<ProtectedRoute><AboutApp /></ProtectedRoute>} />
+        <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+
+
+
         {/* Redirect base route */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
