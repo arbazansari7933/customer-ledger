@@ -1,15 +1,21 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../../uitls/api";
 import PrintItemRow from "../../components/PrintItemRow";
 
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
 export default function BillPrint() {
+
   const navigate = useNavigate();
   const { id } = useParams();
 
   const [bill, setBill] = useState(null);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const printRef = useRef();
 
   useEffect(() => {
     const fetchBill = async () => {
@@ -27,12 +33,30 @@ export default function BillPrint() {
     fetchBill();
   }, [id]);
 
-  // 🟡 Loading state
+  const generatePDF = async () => {
+
+    const element = printRef.current;
+
+    const canvas = await html2canvas(element, {
+      scale: 2
+    });
+
+    const imgData = canvas.toDataURL("image/png");
+
+    const pdf = new jsPDF("p", "mm", [80, canvas.height * 0.264583]);
+
+    const imgWidth = 80;
+    const imgHeight = canvas.height * 0.264583;
+
+    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+    pdf.save(`bill-${id}.pdf`);
+  };
+
   if (loading) {
     return <p className="p-4 text-center">Loading...</p>;
   }
 
-  // 🔴 Error / Not found state
   if (!bill) {
     return (
       <div className="p-4 text-center text-red-500">
@@ -42,14 +66,36 @@ export default function BillPrint() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-200 flex justify-center py-6">
+    <div className="min-h-screen bg-gray-200 flex flex-col items-center py-6">
 
-      {/* RECEIPT PAPER */}
-      <div className="bg-white w-[300px] p-4 shadow text-sm">
+      {/* BUTTONS */}
+      <div className="flex gap-3 mb-4">
+
+        <button
+          onClick={() => navigate(-1)}
+          className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+        >
+          Back
+        </button>
+
+        <button
+          onClick={generatePDF}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg shadow hover:bg-green-700"
+        >
+          Generate / Print PDF
+        </button>
+
+      </div>
+
+      {/* RECEIPT */}
+      <div
+        ref={printRef}
+        className="bg-white w-[220px] p-3 shadow text-[12px] font-mono leading-tight"
+      >
 
         {/* SHOP HEADER */}
         <div className="text-center">
-          <h1 className="text-xl font-bold tracking-wide">
+          <h1 className="text-lg font-bold tracking-wide">
             KGN COLLECTION
           </h1>
           <p>Complete Family Mall & Wholesale</p>
@@ -60,63 +106,66 @@ export default function BillPrint() {
         <hr className="my-2 border-dashed" />
 
         {/* BILL INFO */}
-        <div className="text-xs space-y-1">
+        <div className="space-y-1">
           <p>Bill ID: {id}</p>
           <p>Name: {bill.name}</p>
           <p>Phone: {bill.phone}</p>
-          <p>
-          Date: {new Date(bill.date).toLocaleDateString()}
-        </p>
+          <p>Date: {new Date(bill.date).toLocaleDateString()}</p>
         </div>
 
         <hr className="my-2 border-dashed" />
 
         {/* ITEM HEADER */}
-        <div className="flex text-xs font-semibold">
-          <span className="w-[35%]">Item</span>
-          <span className="w-[10%] text-center">Q</span>
+        <div className="flex font-semibold">
+          <span className="w-[18%]">Item</span>
+          <span className="w-[7%] text-center">Q</span>
           <span className="w-[15%] text-center">MRP</span>
-          <span className="w-[10%] text-center">Disc</span>
-          <span className="w-[15%] text-center">Rate</span>
+          <span className="w-[17%] text-center">Disc</span>
+          <span className="w-[30%] text-center">Rate</span>
           <span className="w-[15%] text-right">Amt</span>
         </div>
 
         <hr className="my-1" />
 
-        <div className="space-y-2">
-                  {bill?.items?.map((item) => (
-                    <PrintItemRow key={item._id} item={item} />
-                  ))}
+        {/* ITEMS */}
+        <div className="space-y-1">
+          {bill?.items?.map((item) => (
+            <PrintItemRow key={item._id} item={item} />
+          ))}
         </div>
 
         <hr className="my-2 border-dashed" />
 
-        {/* TOTAL SECTION */}
-        <div className="text-xs space-y-1">
+        {/* TOTAL */}
+        <div className="space-y-1">
+
           <div className="flex justify-between">
             <span>Total</span>
-            <span>{bill.total}</span>
+            <span>₹ {Number(bill.total).toFixed(2)}</span>
           </div>
 
           <div className="flex justify-between">
             <span>Paid</span>
-            <span>{bill.paid}</span>
+            <span>₹ {Number(bill.paid).toFixed(2)}</span>
           </div>
 
           <div className="flex justify-between font-bold">
             <span>Due</span>
-            <span>{bill.due}</span>
+            <span>₹ {Number(bill.due).toFixed(2)}</span>
           </div>
+
         </div>
 
         <hr className="my-2 border-dashed" />
 
         {/* FOOTER */}
-        <div className="text-center text-xs mt-2">
+        <div className="text-center mt-2">
           <p>Thank You! Visit Again</p>
         </div>
-
+        <br />
+        <br />
       </div>
+
     </div>
   );
 }

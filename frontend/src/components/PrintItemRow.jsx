@@ -1,11 +1,11 @@
 export default function PrintItemRow({ item }) {
   return (
     <div className="flex text-xs leading-tight">
-      <span className="w-[35%] truncate">
+      <span className="w-[18%] ">
         {item.itemName}
       </span>
 
-      <span className="w-[10%] text-center">
+      <span className="w-[7%] text-center">
         {item.qty}
       </span>
 
@@ -13,11 +13,11 @@ export default function PrintItemRow({ item }) {
         {item.mrp}
       </span>
 
-      <span className="w-[10%] text-center">
+      <span className="w-[15%] text-center">
         {item.discount}%
       </span>
 
-      <span className="w-[15%] text-center">
+      <span className="w-[30%] text-center">
         {item.finalRate}
       </span>
 
