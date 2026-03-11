@@ -1,4 +1,4 @@
-import api from "../../uitls/api";
+import api from "../../utils/api";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import CustomerCard from "../../components/CustomerCard";

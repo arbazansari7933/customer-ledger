@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import api from "../../uitls/api";
+import api from "../../utils/api";
 import PrintItemRow from "../../components/PrintItemRow";
 
 import jsPDF from "jspdf";

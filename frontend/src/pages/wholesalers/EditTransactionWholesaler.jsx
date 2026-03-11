@@ -1,4 +1,4 @@
-import api from "../../uitls/api";
+import api from "../../utils/api";
 import { useState, useEffect } from "react";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";

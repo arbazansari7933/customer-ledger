@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import api from "../../uitls/api";
+import api from "../../utils/api";
 import ItemCard from "../../components/ItemCard";
 
 export default function BillDetails() {

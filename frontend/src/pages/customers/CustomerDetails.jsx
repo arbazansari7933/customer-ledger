@@ -1,4 +1,4 @@
-import api from "../../uitls/api";
+import api from "../../utils/api";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import TransactionCard from "../../components/TransactionCard";

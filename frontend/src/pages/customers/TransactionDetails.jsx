@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, Link, useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import api from "../../uitls/api";
+import api from "../../utils/api";
 const TransactionDetails = () => {
   const { transactionId } = useParams();
   const location = useLocation();
