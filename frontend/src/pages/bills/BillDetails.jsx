@@ -84,7 +84,7 @@ export default function BillDetails() {
       <div className="bg-white rounded-xl shadow p-4 mb-4">
         <p className="font-semibold text-gray-800 mb-3">Items</p>
         <div className="bg-gray-100 border rounded-lg px-3 py-2 text-xs font-semibold text-gray-700 flex justify-between">
-          <span className="w-[30%]">Name</span>
+          <span className="w-[20%]">Name</span>
           <span className="w-[10%] text-center">Qty</span>
           <span className="w-[15%] text-center">MRP</span>
           <span className="w-[15%] text-center">Disc</span>

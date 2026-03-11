@@ -116,8 +116,8 @@ export default function BillPrint() {
         <hr className="my-2 border-dashed" />
 
         {/* ITEM HEADER */}
-        <div className="flex font-semibold">
-          <span className="w-[18%]">Item</span>
+        <div className=" flex font-semibold">
+          <span className="w-[25%]">Item</span>
           <span className="w-[7%] text-center">Q</span>
           <span className="w-[15%] text-center">MRP</span>
           <span className="w-[17%] text-center">Disc</span>

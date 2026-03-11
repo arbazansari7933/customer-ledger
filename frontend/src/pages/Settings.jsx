@@ -1,4 +1,5 @@
 import { useNavigate, Link } from "react-router-dom";
+import DevNotice from "../components/DevNotice";
 
 export default function Settings() {
 
@@ -26,9 +27,7 @@ export default function Settings() {
       </div>
 
       {/* Notice */}
-      <div className="bg-yellow-50 border border-yellow-300 text-yellow-800 rounded-lg p-3 text-sm mb-4">
-        🚧 This section is under development. More features will be added soon.
-      </div>
+      <DevNotice/>
 
       {/* SETTINGS LIST */}
       <div className="bg-white rounded-xl shadow divide-y">
@@ -40,7 +39,9 @@ export default function Settings() {
               🏪 Shop Information
             </p>
             <p className="text-sm text-gray-500">
-              Shop name, address and phone
+              KGN Collection
+              <br></br>
+              Main Road Maskedih
             </p>
           </div>
 

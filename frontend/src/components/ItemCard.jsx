@@ -2,7 +2,7 @@ export default function ItemCard({ item }) {
   return (
     <div className="border-b px-3 py-2 text-sm flex justify-between items-center">
 
-      <span className="w-[30%] truncate font-medium">
+      <span className="w-[20%] truncate font-medium">
         {item.itemName}
       </span>
 
