@@ -6,7 +6,9 @@ import axios from "axios";
 //http://localhost:5000/api
 
 const api = axios.create({
-  baseURL: "https://customer-ledger-backend.onrender.com/api", // your backend URL
+  baseURL: process.env.NODE_ENV === "production"
+    ? "https://customer-ledger-backend.onrender.com/api"
+    : "http://localhost:5000/api"
 });
 
 // Automatically attach token on every request

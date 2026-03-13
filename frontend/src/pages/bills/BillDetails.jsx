@@ -64,11 +64,30 @@ export default function BillDetails() {
         ← Back
       </button>
 
-      {/* HEADER */}
-      <div className="bg-white rounded-xl shadow p-4 mb-4">
-        <h1 className="text-xl font-semibold text-gray-800">Bill Details</h1>
-        <p className="text-gray-500 text-sm">Bill Id: {id}</p>
-      </div>
+     {/* HEADER */}
+<div className="bg-white rounded-xl shadow p-4 mb-4 flex justify-between items-center">
+  <div>
+    <h1 className="text-xl font-semibold text-gray-800">Bill Details</h1>
+    <p className="text-gray-500 text-sm">Bill Id: {id}</p>
+  </div>
+
+  <div className="flex gap-2">
+    {/* Edit Button */}
+    <Link to={`/bill-edit/${id}`}>
+  <button className="border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 text-sm">
+    Edit
+  </button>
+</Link>
+
+    {/* Delete Button */}
+    <button
+      onClick={handleDelete}
+      className="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 text-sm"
+    >
+      Delete
+    </button>
+  </div>
+</div>
 
       {/* CUSTOMER INFO */}
       <div className="bg-white rounded-xl shadow p-4 mb-4 space-y-1">
@@ -135,11 +154,11 @@ export default function BillDetails() {
           </button>
         </Link>
 
-        <button               
+        {/* <button               
         onClick={handleDelete}
         className="flex-1 bg-red-600 text-white py-3 rounded-lg shadow hover:bg-red-700">
           Delete
-        </button>
+        </button> */}
       </div>
     </div>
   );

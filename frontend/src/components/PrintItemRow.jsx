@@ -5,24 +5,24 @@ export default function PrintItemRow({ item }) {
         {item.itemName}
       </span>
 
-      <span className="w-[7%] text-center">
+      <span className="w-[15%] text-center">
         {item.qty}
       </span>
 
       <span className="w-[15%] text-center">
-        {item.mrp.toFixed(2)}
+        {item.mrp.toFixed(0)}
       </span>
 
       <span className="w-[15%] text-center">
         {item.discount}%
       </span>
 
-      <span className="w-[30%] text-center">
-        {item.finalRate.toFixed(2)}
+      <span className="w-[15%] text-center">
+        {item.finalRate.toFixed(0)}
       </span>
 
       <span className="w-[15%] text-right font-semibold">
-        {item.amount.toFixed(2)}
+        {item.amount.toFixed(0)}
       </span>
     </div>
   );

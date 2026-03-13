@@ -95,7 +95,7 @@ export default function BillPrint() {
 
         {/* SHOP HEADER */}
         <div className="text-center">
-          <h1 className="text-lg font-bold tracking-wide">
+          <h1 className="text-lg font-bold tracking-wide font-serif">
             KGN COLLECTION
           </h1>
           <p>Complete Family Mall & Wholesale</p>
@@ -116,12 +116,12 @@ export default function BillPrint() {
         <hr className="my-2 border-dashed" />
 
         {/* ITEM HEADER */}
-        <div className=" flex font-semibold">
+        <div className=" flex font-semibold text-[11px]">
           <span className="w-[25%]">Item</span>
-          <span className="w-[7%] text-center">Q</span>
+          <span className="w-[15%] text-center">Q</span>
           <span className="w-[15%] text-center">MRP</span>
-          <span className="w-[17%] text-center">Disc</span>
-          <span className="w-[30%] text-center">Rate</span>
+          <span className="w-[15%] text-center">Disc</span>
+          <span className="w-[15%] text-center">Rate</span>
           <span className="w-[15%] text-right">Amt</span>
         </div>
 
@@ -141,17 +141,17 @@ export default function BillPrint() {
 
           <div className="flex justify-between">
             <span>Total</span>
-            <span>₹ {Number(bill.total).toFixed(2)}</span>
+            <span>₹ {Number(bill.total).toFixed(0)}</span>
           </div>
 
           <div className="flex justify-between">
             <span>Paid</span>
-            <span>₹ {Number(bill.paid).toFixed(2)}</span>
+            <span>₹ {Number(bill.paid).toFixed(0)}</span>
           </div>
 
           <div className="flex justify-between font-bold">
             <span>Due</span>
-            <span>₹ {Number(bill.due).toFixed(2)}</span>
+            <span>₹ {Number(bill.due).toFixed(0)}</span>
           </div>
 
         </div>
