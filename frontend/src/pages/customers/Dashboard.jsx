@@ -83,24 +83,17 @@ const Dashboard = () => {
     </div>
   </div>
 
-  {/* SEARCH BAR */}
-  <div className="flex gap-2 mb-4">
-    <input
-      type="text"
-      placeholder="Search customer"
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-      className="flex-1 h-11 px-3 border border-gray-300 rounded-lg bg-white shadow-sm 
-                 focus:ring-2 focus:ring-green-400 outline-none"
-    />
-
-    <button
-      //onClick={() => navigate("/wholesaler")}
-      className="px-3 h-11 bg-green-600 text-white rounded-lg shadow hover:bg-green-700"
-    >
-      Search
-    </button>
-  </div>
+ {/* SEARCH BAR */}
+<div className="mb-4">
+  <input
+    type="text"
+    placeholder="🔎 Search by name or phone number..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="w-full h-11 px-4 border border-gray-300 rounded-lg bg-white shadow-sm 
+               focus:ring-2 focus:ring-green-400 outline-none"
+  />
+</div>
 
   {/* LABEL */}
   <p className="text-gray-500 text-sm mb-2">

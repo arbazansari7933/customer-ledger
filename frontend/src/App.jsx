@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import AboutApp from "./pages/AboutApp";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
+import PurchaseCalculator from "./pages/PurchaseCalculator";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -30,6 +31,7 @@ import BillsDashboard from "./pages/bills/BillsDashboard";
 import BillDetails from "./pages/bills/BillDetails";
 import AddBill from "./pages/bills/AddBill";
 import BillPrint from "./pages/bills/BillPrint";
+import EditBill from "./pages/bills/EditBill";
 
 export default function App() {
   return (
@@ -60,11 +62,12 @@ export default function App() {
         <Route path="/bill/:id" element={<ProtectedRoute><BillDetails /></ProtectedRoute>} />
         <Route path="/add-bill" element={<ProtectedRoute><AddBill /></ProtectedRoute>} />
         <Route path="/bill-print/:id" element={<ProtectedRoute><BillPrint /></ProtectedRoute>} />
+        <Route path="/bill/edit/:id" element={<ProtectedRoute><EditBill /></ProtectedRoute>} />
 
         <Route path="/about" element={<ProtectedRoute><AboutApp /></ProtectedRoute>} />
         <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-
+        <Route path="/purchase-calculator" element={<PurchaseCalculator />} />
 
 
         {/* Redirect base route */}

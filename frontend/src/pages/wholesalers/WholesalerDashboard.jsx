@@ -43,8 +43,8 @@ const WholesalerDashboard = () => {
     const totalAdvance = data
         .filter(c => c.balance > 0)
         .reduce((sum, c) => sum + Math.abs(c.balance), 0);
-        console.log("Udhar: ", totalUdhar);
-        console.log("Advance: ", totalAdvance);
+       // console.log("Udhar: ", totalUdhar);
+       // console.log("Advance: ", totalAdvance);
         
 
     return (
@@ -82,23 +82,20 @@ const WholesalerDashboard = () => {
   </div>
 
   {/* SEARCH BAR */}
-  <div className="flex gap-2 mb-4">
-    <input
-      type="text"
-      placeholder="Search wholesaler"
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-      className="flex-1 h-11 px-3 border border-gray-300 rounded-lg bg-white shadow-sm 
-                 focus:ring-2 focus:ring-green-400 outline-none"
-    />
+<div className="mb-4 relative">
+  <input
+    type="text"
+    placeholder="Search by wholesaler name or phone..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="w-full h-11 pl-10 pr-4 border border-gray-300 rounded-lg bg-white shadow-sm 
+               focus:ring-2 focus:ring-green-400 outline-none"
+  />
 
-    <button
-     // onClick={() => navigate("/wholesaler")}
-      className="px-3 h-11 bg-green-600 text-white rounded-lg shadow hover:bg-green-700"
-    >
-      Search
-    </button>
-  </div>
+  <span className="absolute left-3 top-2.5 text-gray-400">
+    🔍
+  </span>
+</div>
 
   {/* LABEL */}
   <p className="text-gray-500 text-sm mb-2">

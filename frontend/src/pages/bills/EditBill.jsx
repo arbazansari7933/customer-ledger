@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import api from "../../utils/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function AddBill() {
+export default function EditBill() {
+
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const [customer, setCustomer] = useState({
     name: "",
@@ -16,7 +18,33 @@ export default function AddBill() {
   ]);
 
   const [paid, setPaid] = useState(0);
+  const [loading, setLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const fetchBill = async () => {
+      try {
+        const res = await api.get(`/bills/${id}`);
+        const bill = res.data.bill;
+
+        setCustomer({
+          name: bill.name,
+          phone: bill.phone,
+          address: bill.address
+        });
+
+        setItems(bill.items);
+        setPaid(bill.paid);
+
+      } catch (error) {
+        console.log("Error fetching bill");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBill();
+  }, [id]);
 
   const handleCustomerChange = (e) => {
     setCustomer({
@@ -26,9 +54,9 @@ export default function AddBill() {
   };
 
   const handleItemChange = (index, e) => {
-    const updatedItems = [...items];
-    updatedItems[index][e.target.name] = e.target.value;
-    setItems(updatedItems);
+    const updated = [...items];
+    updated[index][e.target.name] = e.target.value;
+    setItems(updated);
   };
 
   const addItem = () => {
@@ -57,8 +85,6 @@ export default function AddBill() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isSubmitting) return;
-
     const processedItems = items.map(item => {
       const rate = calculateRate(Number(item.mrp), Number(item.discount));
       const amount = calculateAmount(Number(item.qty), rate);
@@ -79,20 +105,23 @@ export default function AddBill() {
     };
 
     try {
+
       setIsSubmitting(true);
 
-      const res = await api.post("/bills", billData);
+      await api.put(`/bills/${id}`, billData);
 
-      console.log("Bill Created:", res.data);
-
-      navigate("/bills");
+      navigate(`/bill/${id}`);
 
     } catch (error) {
-      console.log(error.response?.data?.message || "Error creating bill");
+      console.log(error.response?.data?.message || "Error updating bill");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  if (loading) {
+    return <p className="p-4 text-center">Loading...</p>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-6">
@@ -100,12 +129,12 @@ export default function AddBill() {
       <div className="max-w-xl mx-auto">
 
         <h1 className="text-2xl font-semibold text-gray-800 mb-4">
-          Create Bill
+          Edit Bill
         </h1>
 
         <form onSubmit={handleSubmit}>
 
-          {/* Customer Section */}
+          {/* Customer */}
           <div className="bg-white rounded-xl shadow p-4 mb-4 space-y-3">
 
             <p className="font-semibold text-gray-700">Customer Info</p>
@@ -113,45 +142,45 @@ export default function AddBill() {
             <input
               type="text"
               name="name"
-              placeholder="Customer Name"
               value={customer.name}
               onChange={handleCustomerChange}
-              className="w-full h-11 px-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-400 outline-none"
+              placeholder="Customer Name"
+              className="w-full h-11 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
             />
 
             <input
               type="text"
               name="phone"
-              placeholder="Phone"
               value={customer.phone}
               onChange={handleCustomerChange}
-              className="w-full h-11 px-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-400 outline-none"
+              placeholder="Phone"
+              className="w-full h-11 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
             />
 
             <input
               type="text"
               name="address"
-              placeholder="Address"
               value={customer.address}
               onChange={handleCustomerChange}
-              className="w-full h-11 px-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-400 outline-none"
+              placeholder="Address"
+              className="w-full h-11 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
             />
 
           </div>
 
-          {/* Items Section */}
+
+          {/* Items */}
           <div className="bg-white rounded-xl shadow p-4 mb-4">
 
             <p className="font-semibold text-gray-700 mb-3">Items</p>
 
-            {/* Header Row */}
-            <div className="grid grid-cols-6 gap-2 mb-2 text-xs font-semibold text-gray-500 border-b pb-2">
-              <div className="px-2">Item</div>
-              <div className="text-center px-2">Qty</div>
-              <div className="text-center px-2">MRP</div>
-              <div className="text-center px-2">Disc%</div>
-              <div className="text-center px-2">Rate</div>
-              <div className="text-right px-2">Amount</div>
+            <div className="grid grid-cols-6 gap-2 text-xs font-semibold text-gray-500 mb-2">
+              <p>Item</p>
+              <p>Qty</p>
+              <p>MRP</p>
+              <p>Disc</p>
+              <p>Rate</p>
+              <p>Amt</p>
             </div>
 
             {items.map((item, index) => {
@@ -160,11 +189,10 @@ export default function AddBill() {
               const amount = calculateAmount(item.qty, rate);
 
               return (
-                <div key={index} className="grid grid-cols-6 gap-2 mb-3 items-center">
+                <div key={index} className="grid grid-cols-6 gap-2 mb-3">
 
                   <input
                     name="itemName"
-                    placeholder="Item"
                     value={item.itemName}
                     onChange={(e) => handleItemChange(index, e)}
                     className="border border-gray-300 rounded-lg p-2 text-sm"
@@ -175,7 +203,7 @@ export default function AddBill() {
                     type="number"
                     value={item.qty}
                     onChange={(e) => handleItemChange(index, e)}
-                    className="border border-gray-300 rounded-lg p-2 text-sm text-center"
+                    className="border border-gray-300 rounded-lg p-2 text-sm"
                   />
 
                   <input
@@ -183,7 +211,7 @@ export default function AddBill() {
                     type="number"
                     value={item.mrp}
                     onChange={(e) => handleItemChange(index, e)}
-                    className="border border-gray-300 rounded-lg p-2 text-sm text-center"
+                    className="border border-gray-300 rounded-lg p-2 text-sm"
                   />
 
                   <input
@@ -191,15 +219,15 @@ export default function AddBill() {
                     type="number"
                     value={item.discount}
                     onChange={(e) => handleItemChange(index, e)}
-                    className="border border-gray-300 rounded-lg p-2 text-sm text-center"
+                    className="border border-gray-300 rounded-lg p-2 text-sm"
                   />
 
-                  <div className="text-center text-sm text-gray-700 font-mono">
-                    ₹{rate.toFixed(0)}
+                  <div className="flex items-center text-sm">
+                    ₹{rate.toFixed(2)}
                   </div>
 
-                  <div className="text-right font-semibold text-gray-800 font-mono">
-                    ₹{amount.toFixed(0)}
+                  <div className="flex items-center font-semibold">
+                    ₹{amount.toFixed(2)}
                   </div>
 
                 </div>
@@ -216,33 +244,28 @@ export default function AddBill() {
 
           </div>
 
-          {/* Payment Section */}
+
+          {/* Summary */}
           <div className="bg-white rounded-xl shadow p-4 mb-4 space-y-3">
 
-            <p className="font-semibold text-gray-700">Summary</p>
-
-            <div className="flex justify-between text-gray-600">
+            <div className="flex justify-between">
               <p>Total</p>
-              <p className="font-semibold text-gray-800">
-                ₹{total.toFixed(0)}
-              </p>
+              <p className="font-semibold">₹{total.toFixed(2)}</p>
             </div>
-            <div className="flex justify-between text-gray-600 ">
+
             <p>Paid</p>
 
             <input
               type="number"
-              placeholder="Paid Amount"
               value={paid}
               onChange={(e) => setPaid(Number(e.target.value))}
-              className="w-3s0 h-8 px-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-400 outline-none"
+              className="w-full h-11 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 outline-none"
             />
-            </div>
 
             <div className="flex justify-between">
-              <p className="text-gray-600">Due</p>
+              <p>Due</p>
               <p className="font-semibold text-red-600">
-                ₹{due.toFixed(0)}
+                ₹{due.toFixed(2)}
               </p>
             </div>
 
@@ -250,10 +273,9 @@ export default function AddBill() {
 
           <button
             disabled={isSubmitting}
-            type="submit"
-            className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium shadow transition"
+            className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium"
           >
-            Create Bill
+            Update Bill
           </button>
 
         </form>

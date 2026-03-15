@@ -33,7 +33,7 @@ export const wholesalerList = async (req, res) => {
         //     return res.status(403).json({ message: "Access denied" });
         // }
         const wholesalers = await Wholesaler.find().sort({ createdAt: -1 });
-        console.log("TOTAL WHOLESALERS:", wholesalers.length);   // 👈 ADD HERE
+       // console.log("TOTAL WHOLESALERS:", wholesalers.length);   // 👈 ADD HERE
         res.json({
             message: "wholesaler fetched successfully",
             wholesalers,

@@ -128,3 +128,50 @@ export const deleteBill=async (req, res) => {
         res.status(500).json({ message: "server Error" });
     }
 }
+
+export const updateBill = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    const {
+      name,
+      phone,
+      address,
+      items,
+      total,
+      paid,
+      due
+    } = req.body;
+
+    const bill = await Bill.findById(id);
+
+    if (!bill) {
+      return res.status(404).json({
+        message: "Bill not found"
+      });
+    }
+
+    bill.name = name;
+    bill.phone = phone;
+    bill.address = address;
+    bill.items = items;
+    bill.total = total;
+    bill.paid = paid;
+    bill.due = due;
+
+    bill.status = due === 0 ? "paid" : "due";
+
+    await bill.save();
+
+    res.status(200).json({
+      message: "Bill updated successfully",
+      bill
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error"
+    });
+  }
+};

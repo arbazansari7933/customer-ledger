@@ -71,22 +71,22 @@ export default function BillDetails() {
     <p className="text-gray-500 text-sm">Bill Id: {id}</p>
   </div>
 
-  <div className="flex gap-2">
-    {/* Edit Button */}
-    <Link to={`/bill-edit/${id}`}>
-  <button className="border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 text-sm">
-    Edit
-  </button>
-</Link>
-
-    {/* Delete Button */}
-    <button
-      onClick={handleDelete}
-      className="bg-red-600 text-white px-4 py-2 rounded-lg shadow hover:bg-red-700 text-sm"
-    >
-      Delete
+  <div className="flex items-center gap-2">
+  {/* Edit Button */}
+  <Link to={`/bill/edit/${id}`}>
+    <button className="border border-green-600 text-green-600 px-4 py-2 rounded-lg hover:bg-green-50 text-sm">
+      Edit
     </button>
-  </div>
+  </Link>
+
+  {/* Delete Button */}
+  <button
+    onClick={handleDelete}
+    className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 text-sm"
+  >
+    Delete
+  </button>
+</div>
 </div>
 
       {/* CUSTOMER INFO */}
@@ -149,7 +149,7 @@ export default function BillDetails() {
       {/* ACTION BUTTONS */}
       <div className="mt-4 flex gap-3">
         <Link to={`/bill-print/${id}`} className="flex-1">
-          <button className="w-full bg-green-600 text-white py-3 rounded-lg shadow hover:bg-green-700">
+          <button className="w-full bg-green-600 text-white py-3 rounded-lg shadow hover:bg-green-700 ">
             Print Bill
           </button>
         </Link>

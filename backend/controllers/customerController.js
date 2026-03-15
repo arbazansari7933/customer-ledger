@@ -54,9 +54,9 @@ export const customerList = async (req, res) => {
 export const customerDetails = async (req, res) => {
     try {
         const { customerId } = req.params;
-        console.log("ID received:", customerId);
+       // console.log("ID received:", customerId);
         const customer = await Customer.findById(customerId);
-        console.log("customer : " ,customer)
+       // console.log("customer : " ,customer)
         if (!customer) {
             return res.status(400).json({ message: "Customer not found!" })
         }
