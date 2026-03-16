@@ -102,6 +102,12 @@ const Dashboard = () => {
 
   {/* CUSTOMER LIST */}
   <div className="space-y-3 overflow-y-auto pb-20 h-[65vh]">
+    {/* Loading */}
+        {loading && (
+          <p className="text-center text-gray-500">
+            Loading customers...
+          </p>
+        )}
 
     {filtered.length === 0 && !loading && (
       <p className="text-center text-gray-500">No customer found</p>

@@ -104,6 +104,12 @@ const WholesalerDashboard = () => {
 
   {/* wholesaler LIST */}
   <div className="space-y-3 overflow-y-auto pb-20 h-[65vh]">
+    {/* Loading */}
+        {loading && (
+          <p className="text-center text-gray-500">
+            Loading wholesalers...
+          </p>
+        )}
 
     {filtered.length === 0 && !loading && (
       <p className="text-center text-gray-500">No wholesaler found</p>

@@ -68,7 +68,7 @@ export default function BillDetails() {
 <div className="bg-white rounded-xl shadow p-4 mb-4 flex justify-between items-center">
   <div>
     <h1 className="text-xl font-semibold text-gray-800">Bill Details</h1>
-    <p className="text-gray-500 text-sm">Bill Id: {id}</p>
+    <p className="text-gray-500 text-xs">Bill Id: {id}</p>
   </div>
 
   <div className="flex items-center gap-2">

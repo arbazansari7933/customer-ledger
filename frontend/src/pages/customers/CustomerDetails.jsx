@@ -2,6 +2,7 @@ import api from "../../utils/api";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import TransactionCard from "../../components/TransactionCard";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function CustomerDetails() {
 
@@ -52,6 +53,41 @@ export default function CustomerDetails() {
       console.log(error.response?.data?.message || "Something went wrong");
     }
   }
+  const handleWhatsAppReminder = () => {
+  if (!customer.phone) {
+    alert("Customer phone number not available");
+    return;
+  }
+
+  const phone = `91${customer.phone}`;
+
+  // remove minus sign
+  const balanceAmount = Math.abs(customer.balance);
+
+  let statusText = "";
+
+  if (customer.balance < 0) {
+    statusText = `Aapka ₹${balanceAmount} baki (due) hai.`;
+  } else if (customer.balance > 0) {
+    statusText = `Aapke paas ₹${balanceAmount} advance jama hai.`;
+  } else {
+    statusText = `Aapka balance clear hai.`;
+  }
+
+  const message = `Hello ${customer.name},
+
+KGN Collection se message.
+
+${statusText}
+
+Jitna jald ho sake payment clear kare !
+
+Thank You !!`;
+
+  const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+  window.open(url, "_blank");
+};
 
   return (
     <div className="min-h-screen bg-gray-100 px-4 sm:px-6 py-6">
@@ -94,8 +130,19 @@ export default function CustomerDetails() {
           {customer.name}
         </h1>
 
-        <p className="text-gray-600 text-sm sm:text-base">{customer.phone}</p>
+        <div className="flex items-center justify-between mt-1">
+          <p className="text-gray-600 text-sm sm:text-base">
+            {customer.phone}
+          </p>
 
+          <button
+            onClick={handleWhatsAppReminder}
+            className="flex items-center gap-1.5 px-3 py-1 text-lg bg-green-500 text-white rounded-lg shadow-sm hover:bg-green-600 transition"
+          >
+            <FaWhatsapp size={19} />
+            Reminder
+          </button>
+        </div>
         {customer.address && (
           <p className="text-gray-500 text-sm mt-1">{customer.address}</p>
         )}
@@ -105,10 +152,12 @@ export default function CustomerDetails() {
         >
           ₹ {customer.balance}
         </p>
+
       </div>
 
       {/* Action Buttons */}
       <div className="w-full max-w-xl mx-auto mb-6 flex gap-3">
+
 
         {/* Give */}
         <Link
