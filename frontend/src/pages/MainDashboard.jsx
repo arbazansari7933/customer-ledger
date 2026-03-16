@@ -81,6 +81,13 @@ export default function MainDashboard() {
             Reports
           </p>
         </Link>
+        <Link
+  to="/stickers"
+  className="bg-white shadow-sm rounded-xl p-5 text-center hover:shadow-md transition"
+>
+  <p className="text-3xl">🏷️</p>
+  <p className="font-semibold text-gray-700 mt-1">Stickers</p>
+</Link>
 
         <Link
   to="/purchase-calculator"

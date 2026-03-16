@@ -223,11 +223,11 @@ export default function EditBill() {
                   />
 
                   <div className="flex items-center text-sm">
-                    ₹{rate.toFixed(2)}
+                    ₹{rate.toFixed(0)}
                   </div>
 
                   <div className="flex items-center font-semibold">
-                    ₹{amount.toFixed(2)}
+                    ₹{amount.toFixed(0)}
                   </div>
 
                 </div>
@@ -250,7 +250,7 @@ export default function EditBill() {
 
             <div className="flex justify-between">
               <p>Total</p>
-              <p className="font-semibold">₹{total.toFixed(2)}</p>
+              <p className="font-semibold">₹{total.toFixed(0)}</p>
             </div>
 
             <p>Paid</p>
@@ -265,7 +265,7 @@ export default function EditBill() {
             <div className="flex justify-between">
               <p>Due</p>
               <p className="font-semibold text-red-600">
-                ₹{due.toFixed(2)}
+                ₹{due.toFixed(0)}
               </p>
             </div>
 

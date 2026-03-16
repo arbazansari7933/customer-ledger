@@ -7,6 +7,7 @@ import AboutApp from "./pages/AboutApp";
 import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import PurchaseCalculator from "./pages/PurchaseCalculator";
+import StickerGenerator from "./pages/StickerGenerator";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -68,6 +69,7 @@ export default function App() {
         <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
         <Route path="/purchase-calculator" element={<PurchaseCalculator />} />
+        <Route path="/stickers" element={<ProtectedRoute><StickerGenerator/></ProtectedRoute>} />
 
 
         {/* Redirect base route */}
