@@ -125,6 +125,7 @@ positions.forEach(pos => {
             ref={stickerRef}
             className="border w-[240px] p-1.5 text-center bg-white"
           >
+            
 
             <h2 className="font-bold text-xl tracking-wide leading-none -mt-1">
   KGN COLLECTION
