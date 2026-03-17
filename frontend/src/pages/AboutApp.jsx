@@ -21,26 +21,23 @@ export default function AboutApp() {
           About This App
         </h1>
         <p className="text-sm text-gray-500">
-          KGN Collection Shop Management System
+          KGN Collection • Customer Ledger & Billing System
         </p>
       </div>
 
-      {/* About App */}
+      {/* About */}
       <div className="bg-white rounded-xl shadow p-4 mb-4 space-y-3">
 
         <p className="text-gray-700 text-sm leading-relaxed">
-          This application is built to manage daily shop operations for 
-          <span className="font-semibold"> KGN Collection</span>.
+          This application is built for 
+          <span className="font-semibold"> KGN Collection </span>
+          to manage daily shop operations like customer records,
+          wholesaler transactions, and billing in a simple digital way.
         </p>
 
         <p className="text-gray-700 text-sm leading-relaxed">
-          The goal of this system is to make customer transactions, wholesaler
-          records, and billing simple and organized.
-        </p>
-
-        <p className="text-gray-700 text-sm leading-relaxed">
-          Instead of maintaining physical notebooks for credit and payments,
-          all records are stored digitally so they are easy to track and manage.
+          It replaces manual notebook entries by storing all data digitally,
+          making it easy to track dues, payments, and daily business activity.
         </p>
 
       </div>
@@ -54,18 +51,39 @@ export default function AboutApp() {
 
         <ul className="text-sm text-gray-700 space-y-2">
 
-          <li>• Manage customer credit (Udhar) records</li>
+          <li>• Manage customer details and credit (Udhar)</li>
 
-          <li>• Manage wholesaler transactions</li>
+          <li>• Manage wholesaler records and transactions</li>
 
-          <li>• Track payments and balances</li>
+          <li>• Track payments (Due / Paid entries)</li>
 
-          <li>• Generate and print bills</li>
+          <li>• Generate bills and thermal print support</li>
 
-          <li>• View transaction history</li>
+          <li>• Create and print price tag stickers</li>
 
-          <li>• Simple dashboard for quick access</li>
+          <li>• Purchase calculator for estimating wholesaler cost</li>
 
+          <li>• Daily reports (sales, due, customers, bills)</li>
+
+          <li>• View today's bills and due lists</li>
+
+        </ul>
+
+      </div>
+
+      {/* Reports */}
+      <div className="bg-white rounded-xl shadow p-4 mb-4 space-y-2">
+
+        <h2 className="font-semibold text-gray-800">
+          Daily Reports Include
+        </h2>
+
+        <ul className="text-sm text-gray-700 space-y-2">
+          <li>• Total sales of the day</li>
+          <li>• Total due amount</li>
+          <li>• Number of customers</li>
+          <li>• Today’s bills</li>
+          <li>• Pending due bills</li>
         </ul>
 
       </div>
@@ -78,16 +96,21 @@ export default function AboutApp() {
         </h2>
 
         <p className="text-gray-700 text-sm leading-relaxed">
-          This project was created to simplify daily shop management and reduce
-          manual work. It helps track customer dues, payments, and billing
-          efficiently in one place.
+          The goal of this app is to make shop management faster,
+          reduce manual errors, and keep all records organized in one place.
+        </p>
+
+        <p className="text-gray-700 text-sm leading-relaxed">
+          It is designed for real daily usage with a focus on simplicity
+          and quick access to important data.
         </p>
 
       </div>
 
       {/* Footer */}
-      <div className="text-center text-xs text-gray-500 mt-6">
-        Built for KGN Collection
+      <div className="text-center text-xs text-gray-500 mt-6 space-y-1">
+        <p>Built for KGN Collection</p>
+        <p className="text-gray-400">Developed by Arbaz Ansari</p>
       </div>
 
     </div>
