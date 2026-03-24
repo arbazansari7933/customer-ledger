@@ -6,6 +6,9 @@ import authRoutes from "./routes/authRoutes.js";
 import customerRoutes from "./routes/customerRoutes.js";
 import wholesalerRoutes from "./routes/wholesalerRouter.js";
 import billRoutes from "./routes/billRoutes.js";
+import reportRoutes  from "./routes/reportRoutes.js";
+import backupRoutes from "./routes/backupRoutes.js";
+
 dotenv.config();
 connectDB();
 
@@ -20,6 +23,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/wholesalers", wholesalerRoutes);
 app.use("/api/bills", billRoutes);
+app.use("/api/reports", reportRoutes );
+app.use("/api", backupRoutes);
+
 app.get("/api", (req, res) => {
   res.send("Backend is running!");
 });

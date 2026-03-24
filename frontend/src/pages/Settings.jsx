@@ -1,9 +1,61 @@
 import { useNavigate, Link } from "react-router-dom";
 import DevNotice from "../components/DevNotice";
+import api from "../utils/api";
 
 export default function Settings() {
 
   const navigate = useNavigate();
+
+  // 🔽 DOWNLOAD BACKUP
+  const handleDownload = async () => {
+    try {
+      const res = await api.get("/backup", {
+        responseType: "blob",
+      });
+
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.setAttribute("download", `backup-${Date.now()}.json`);
+      document.body.appendChild(link);
+      link.click();
+
+    } catch (error) {
+      console.error("Download failed", error);
+      alert("Download failed ❌");
+    }
+  };
+
+  // 🔼 RESTORE BACKUP
+  const handleRestore = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // ⚠️ confirm before restore
+    const confirmRestore = window.confirm(
+      "⚠️ This will DELETE all current data and replace it. Continue?"
+    );
+
+    if (!confirmRestore) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      await api.post("/restore", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      alert("Restore successful ✅");
+
+    } catch (error) {
+      console.error("Restore failed", error);
+      alert("Restore failed ❌");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -26,8 +78,7 @@ export default function Settings() {
         </p>
       </div>
 
-      {/* Notice */}
-      <DevNotice/>
+      <DevNotice />
 
       {/* SETTINGS LIST */}
       <div className="bg-white rounded-xl shadow divide-y">
@@ -39,8 +90,7 @@ export default function Settings() {
               🏪 Shop Information
             </p>
             <p className="text-sm text-gray-500">
-              KGN Collection
-              <br></br>
+              KGN Collection <br />
               Main Road Maskedih
             </p>
           </div>
@@ -66,7 +116,7 @@ export default function Settings() {
           </button>
         </div>
 
-        {/* Backup */}
+        {/* 🔥 BACKUP */}
         <div className="p-4 flex justify-between items-center">
           <div>
             <p className="font-medium text-gray-800">
@@ -77,9 +127,34 @@ export default function Settings() {
             </p>
           </div>
 
-          <button className="text-green-600 text-sm hover:underline">
+          <button
+            onClick={handleDownload}
+            className="text-green-600 text-sm hover:underline"
+          >
             Download
           </button>
+        </div>
+
+        {/* 🔥 RESTORE */}
+        <div className="p-4 flex justify-between items-center">
+          <div>
+            <p className="font-medium text-gray-800">
+              🔄 Restore Backup
+            </p>
+            <p className="text-sm text-red-500">
+              ⚠️ This will overwrite all data
+            </p>
+          </div>
+
+          <label className="text-green-600 text-sm hover:underline cursor-pointer">
+            Upload
+            <input
+              type="file"
+              accept=".json"
+              onChange={handleRestore}
+              className="hidden"
+            />
+          </label>
         </div>
 
         {/* Account */}
@@ -89,7 +164,6 @@ export default function Settings() {
           </p>
 
           <div className="flex gap-2">
-
             <Link
               to="/login"
               className="flex-1 text-center px-3 py-2 text-sm text-green-600 border border-green-600 rounded-lg hover:bg-green-50 transition"
@@ -103,12 +177,10 @@ export default function Settings() {
             >
               Sign Up
             </Link>
-
           </div>
         </div>
 
       </div>
-
     </div>
   );
 }

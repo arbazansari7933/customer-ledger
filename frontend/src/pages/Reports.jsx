@@ -1,6 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { useState } from "react";
 import DevNotice from "../components/DevNotice";
+import api from "../utils/api";
 
 export default function Reports() {
 
@@ -10,15 +12,46 @@ export default function Reports() {
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
+  
+  //console.log(selectedDate);
 
-  // dummy data (later API se aayega)
-  const totalSales = 0;
-  const totalUdhaar = 0;
-  const totalAdvance = 0;
-  const totalBills = 0;
+  // dummy data (baad me API se aayega)
+  const [bills, setBills] = useState([]);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  const dueCustomers = [];
-  const bills = [];
+ 
+  const totalBills = bills.length;
+
+  const totalSale=bills
+      .reduce((sum, d)=> sum+Math.abs(d.total), 0);
+      
+  const totalDue=bills
+      .reduce((sum, d)=>sum+Math.abs(d.due), 0);  
+
+  const totalPaid=bills
+      .reduce((sum, d)=>sum+Math.abs(d.paid), 0);  
+// console.log(totalSale, totalDue);
+  const dueBills = bills.filter((bill) => bill.due > 0);
+  
+ // const bills = [];
+
+  useEffect(() => {
+    const fetchReport=async()=>{
+      try {
+      const res=await api.post("/reports",{selectedDate});
+      setBills(res.data);
+      setMessage(res.data.message);
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Something went wrong");
+    }
+    finally{
+      setLoading(false); 
+    }
+    }
+    fetchReport();
+  }, [selectedDate])
+  
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -63,21 +96,21 @@ export default function Reports() {
         <div className="bg-white rounded-xl shadow p-4 text-center">
           <p className="text-gray-500 text-sm">Total Sales</p>
           <p className="text-green-600 text-xl font-bold">
-            ₹{totalSales}
+            ₹{totalSale.toFixed(0)}
           </p>
         </div>
 
         <div className="bg-white rounded-xl shadow p-4 text-center">
-          <p className="text-gray-500 text-sm">Total Udhaar</p>
+          <p className="text-gray-500 text-sm">Total Due</p>
           <p className="text-red-600 text-xl font-bold">
-            ₹{totalUdhaar}
+            ₹{totalDue.toFixed(0)}
           </p>
         </div>
 
         <div className="bg-white rounded-xl shadow p-4 text-center">
-          <p className="text-gray-500 text-sm">Advance</p>
+          <p className="text-gray-500 text-sm">Total Receive</p>
           <p className="text-green-600 text-xl font-bold">
-            ₹{totalAdvance}
+            ₹{totalPaid}
           </p>
         </div>
 
@@ -93,18 +126,18 @@ export default function Reports() {
       {/* 💰 DUE CUSTOMERS */}
       <div className="bg-white rounded-xl shadow p-4 mb-4">
         <p className="font-semibold text-gray-800 mb-2">
-          Due Customers
+          Due Bills
         </p>
 
-        {dueCustomers.length === 0 ? (
+        {dueBills.length === 0 ? (
           <p className="text-sm text-gray-500">
-            No due customers
+            No due bills
           </p>
         ) : (
-          dueCustomers.map((c, i) => (
+          dueBills.map((c, i) => (
             <div key={i} className="flex justify-between text-sm border-b py-2">
               <span>{c.name}</span>
-              <span className="text-red-600">₹{c.balance}</span>
+              <span className="text-red-600">₹{c.due.toFixed(0)}</span>
             </div>
           ))
         )}
@@ -123,7 +156,7 @@ export default function Reports() {
         ) : (
           bills.map((bill, i) => (
             <div key={i} className="border-b py-2 text-sm flex justify-between">
-              <span>#{bill.billNo}</span>
+              <span>{bill.name}</span>
               <span>₹{bill.total}</span>
             </div>
           ))
