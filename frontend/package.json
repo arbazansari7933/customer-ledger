@@ -13,6 +13,7 @@
     "axios": "^1.13.2",
     "framer-motion": "^12.23.25",
     "html2canvas": "^1.4.1",
+    "html5-qrcode": "^2.3.8",
     "jspdf": "^2.5.1",
     "qrcode.react": "^4.2.0",
     "react": "^19.2.0",
@@ -36,9 +37,9 @@
     "vite": "^7.2.4"
   },
   "tailwindcss": {
-    "content": [
-      "./index.html",
-      "./src//*.{js,jsx,ts,tsx}"
-    ]
+  "content": [
+    "./index.html",
+    "./src/**/*.{js,jsx,ts,tsx}"
+  ]
   }
 }
