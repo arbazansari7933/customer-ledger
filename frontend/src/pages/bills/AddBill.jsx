@@ -1,8 +1,13 @@
 import { useState } from "react";
 import api from "../../utils/api";
 import { useNavigate } from "react-router-dom";
+import Scanner from "../../components/Scanner"; // adjust path
+import { useRef } from "react";
+
 
 export default function AddBill() {
+  const lastScanRef = useRef("");
+
   const navigate = useNavigate();
 
   const [customer, setCustomer] = useState({
@@ -11,9 +16,9 @@ export default function AddBill() {
     address: ""
   });
 
-  const [items, setItems] = useState([
-    { itemName: "", qty: 1, mrp: 0, discount: 0 }
-  ]);
+  const [items, setItems] = useState([]);
+
+  const [mode, setMode] = useState("scan");
 
   const [paid, setPaid] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,6 +29,7 @@ export default function AddBill() {
       [e.target.name]: e.target.value
     });
   };
+
 
   const handleItemChange = (index, e) => {
     const updatedItems = [...items];
@@ -53,6 +59,37 @@ export default function AddBill() {
   }, 0);
 
   const due = total - paid;
+
+  // filling the item section
+  const addToCart = (product) => {
+    setItems((prev) => {
+      const existing = prev.find(
+        (item) => item.productId === product._id
+      );
+
+      if (existing) {
+        return prev.map((item) =>
+          item.productId === product._id
+            ? { ...item, qty: item.qty + 1 }
+            : item
+        );
+      }
+
+      const finalRate =
+        product.price - (product.price * product.discount) / 100;
+
+      return [
+        ...prev,
+        {
+          productId: product._id,
+          itemName: product.name,
+          mrp: product.price,
+          discount: product.discount,
+          qty: 1
+        },
+      ];
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -93,15 +130,74 @@ export default function AddBill() {
       setIsSubmitting(false);
     }
   };
+  // fetching details from scanner 
+  const scanLockRef = useRef(false);
+
+  const handleScan = async (code) => {
+    if (scanLockRef.current) return;
+    scanLockRef.current = true;
+
+    try {
+      const res = await api.get(`/product/${code}`);
+      addToCart(res.data.product);
+    } catch {
+      alert("Product not found");
+    }
+
+    setTimeout(() => {
+      scanLockRef.current = false;
+    }, 800);
+  };
 
   return (
+
     <div className="min-h-screen bg-gray-100 px-4 py-6">
+
 
       <div className="max-w-xl mx-auto">
 
-        <h1 className="text-2xl font-semibold text-gray-800 mb-4">
-          Create Bill
-        </h1>
+
+        <div className="flex items-center justify-between mb-4">
+
+          <h1 className="text-2xl font-semibold text-gray-800">
+            Create Bill
+          </h1>
+
+          {/* Toggle */}
+          <div
+            onClick={() =>
+              setMode(mode === "scan" ? "manual" : "scan")
+            }
+            className="relative w-48 h-12 bg-green-500 rounded-full overflow-hidden cursor-pointer"
+          >
+            {/* Slider */}
+            <div
+              className={`absolute top-0 left-0 h-full w-1/2 bg-white rounded-full shadow-md transition-transform duration-300
+        ${mode === "scan" ? "translate-x-full" : ""}
+      `}
+            />
+
+            {/* Text */}
+            <div className="relative z-10 grid grid-cols-2 h-full text-sm font-semibold">
+              <span
+                className={`flex items-center justify-center
+          ${mode === "manual" ? "text-green-600" : "text-white"}
+        `}
+              >
+                Manual
+              </span>
+
+              <span
+                className={`flex items-center justify-center
+          ${mode === "scan" ? "text-green-600" : "text-white"}
+        `}
+              >
+                Scan
+              </span>
+            </div>
+          </div>
+
+        </div>
 
         <form onSubmit={handleSubmit}>
 
@@ -154,6 +250,10 @@ export default function AddBill() {
               <div className="text-right px-2">Amount</div>
             </div>
 
+            <div style={{ display: mode === "scan" ? "block" : "none" }}>
+  <Scanner onScanSuccess={handleScan} />
+</div>
+
             {items.map((item, index) => {
 
               const rate = calculateRate(item.mrp, item.discount);
@@ -162,19 +262,23 @@ export default function AddBill() {
               return (
                 <div key={index} className="grid grid-cols-6 gap-2 mb-3 items-center">
 
-                  <input
-                    name="itemName"
-                    placeholder="Item"
-                    value={item.itemName}
-                    onChange={(e) => handleItemChange(index, e)}
-                    className="border border-gray-300 rounded-lg p-2 text-sm"
-                  />
+                  {mode === "manual" ? (
+                    <input
+                      name="itemName"
+                      value={item.itemName}
+                      onChange={(e) => handleItemChange(index, e)}
+                      className="border p-2 text-sm"
+                    />
+                  ) : (
+                    <div className="text-sm px-2">{item.itemName}</div>
+                  )}
 
                   <input
                     name="qty"
                     type="number"
                     value={item.qty}
                     onChange={(e) => handleItemChange(index, e)}
+                    //disabled={mode === "scan"}
                     className="border border-gray-300 rounded-lg p-2 text-sm text-center"
                   />
 
@@ -183,6 +287,7 @@ export default function AddBill() {
                     type="number"
                     value={item.mrp}
                     onChange={(e) => handleItemChange(index, e)}
+                   // disabled={mode === "scan"}
                     className="border border-gray-300 rounded-lg p-2 text-sm text-center"
                   />
 
@@ -191,6 +296,7 @@ export default function AddBill() {
                     type="number"
                     value={item.discount}
                     onChange={(e) => handleItemChange(index, e)}
+                    //disabled={mode === "scan"}
                     className="border border-gray-300 rounded-lg p-2 text-sm text-center"
                   />
 
@@ -206,13 +312,15 @@ export default function AddBill() {
               );
             })}
 
-            <button
-              type="button"
-              onClick={addItem}
-              className="mt-2 text-green-600 text-sm hover:underline"
-            >
-              + Add Item
-            </button>
+            {mode === "manual" && (
+              <button
+                type="button"
+                onClick={addItem}
+                className="mt-2 text-green-600 text-sm hover:underline"
+              >
+                + Add Item
+              </button>
+            )}
 
           </div>
 
@@ -228,15 +336,15 @@ export default function AddBill() {
               </p>
             </div>
             <div className="flex justify-between text-gray-600 ">
-            <p>Paid</p>
+              <p>Paid</p>
 
-            <input
-              type="number"
-              placeholder="Paid Amount"
-              value={paid}
-              onChange={(e) => setPaid(Number(e.target.value))}
-              className="w-3s0 h-8 px-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-400 outline-none"
-            />
+              <input
+                type="number"
+                placeholder="Paid Amount"
+                value={paid}
+                onChange={(e) => setPaid(Number(e.target.value))}
+                className="w-3s0 h-8 px-3 border border-gray-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-green-400 outline-none"
+              />
             </div>
 
             <div className="flex justify-between">
