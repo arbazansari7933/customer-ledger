@@ -5,6 +5,7 @@ import Scanner from "../../components/Scanner"; // adjust path
 import { useRef } from "react";
 
 
+
 export default function AddBill() {
   const lastScanRef = useRef("");
 
@@ -22,6 +23,8 @@ export default function AddBill() {
 
   const [paid, setPaid] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const beepRef = useRef(new Audio("/beep.mp3"));
 
   const handleCustomerChange = (e) => {
     setCustomer({
@@ -134,20 +137,25 @@ export default function AddBill() {
   const scanLockRef = useRef(false);
 
   const handleScan = async (code) => {
-    if (scanLockRef.current) return;
-    scanLockRef.current = true;
+  if (scanLockRef.current) return;
+  scanLockRef.current = true;
 
-    try {
-      const res = await api.get(`/product/${code}`);
-      addToCart(res.data.product);
-    } catch {
-      alert("Product not found");
-    }
+  try {
+    const res = await api.get(`/product/${code}`);
+    addToCart(res.data.product);
 
-    setTimeout(() => {
-      scanLockRef.current = false;
-    }, 800);
-  };
+    //  PLAY BEEP
+    beepRef.current.currentTime = 0;
+    beepRef.current.play().catch(() => {});
+
+  } catch {
+    alert("Product not found");
+  }
+
+  setTimeout(() => {
+    scanLockRef.current = false;
+  }, 800);
+};
 
   return (
 
