@@ -1,5 +1,6 @@
 import Bill from "../models/Bill.js";
 import Customer from "../models/Customer.js";
+import Product from "../models/Product.js";
 
 export const createBill = async (req, res) => {
     try {
@@ -17,6 +18,7 @@ export const createBill = async (req, res) => {
             total += amount;
 
             return {
+                productId: item.productId || null,
                 itemName: item.itemName,
                 qty: item.qty,
                 mrp: item.mrp,
@@ -28,6 +30,26 @@ export const createBill = async (req, res) => {
 
         const due = total - paid;
         const status = due > 0 ? "due" : "paid";
+        for (let item of processedItems) {
+            //skip manual added product
+            if (!item.productId) continue;
+
+            const product = await Product.findById(item.productId);
+
+            if (!product) {
+                return res.status(404).json({
+                    message: `Product not found: ${item.itemName}`
+                });
+            }
+            if (product.stock < item.qty) {
+                return res.status(400).json({
+                    message: `${product.name} out of stock !`
+                })
+            }
+            product.stock -= item.qty;
+            await product.save();
+        }
+        
         //create new bill
         const bill = await Bill.create({
             name,
@@ -92,17 +114,17 @@ export const getAllBills = async (req, res) => {
     }
 }
 
-export const billDetails= async(req, res)=>{
+export const billDetails = async (req, res) => {
     try {
-        const {billId}=req.params;
-        const bill=await Bill.findById(billId);
-        if(!bill){
+        const { billId } = req.params;
+        const bill = await Bill.findById(billId);
+        if (!bill) {
             return res.status(400).json({
                 message: "Bill Not Found!"
             })
         }
         res.status(200).json({
-            message:"Bill Details fetched!",
+            message: "Bill Details fetched!",
             bill
         })
     } catch (error) {
@@ -110,18 +132,18 @@ export const billDetails= async(req, res)=>{
     }
 }
 
-export const deleteBill=async (req, res) => {
+export const deleteBill = async (req, res) => {
     try {
-        const {billId}=req.params;
-        const bill=await Bill.findById(billId);
-        if(!bill){
+        const { billId } = req.params;
+        const bill = await Bill.findById(billId);
+        if (!bill) {
             return res.status(400).json({
                 message: "Bill Not Found!"
             })
         }
         await Bill.findByIdAndDelete(billId);
         res.status(200).json({
-            message:"Bill Deleted successfully!",
+            message: "Bill Deleted successfully!",
             bill
         })
     } catch (error) {
@@ -130,48 +152,48 @@ export const deleteBill=async (req, res) => {
 }
 
 export const updateBill = async (req, res) => {
-  try {
+    try {
 
-    const { id } = req.params;
+        const { id } = req.params;
 
-    const {
-      name,
-      phone,
-      address,
-      items,
-      total,
-      paid,
-      due
-    } = req.body;
+        const {
+            name,
+            phone,
+            address,
+            items,
+            total,
+            paid,
+            due
+        } = req.body;
 
-    const bill = await Bill.findById(id);
+        const bill = await Bill.findById(id);
 
-    if (!bill) {
-      return res.status(404).json({
-        message: "Bill not found"
-      });
+        if (!bill) {
+            return res.status(404).json({
+                message: "Bill not found"
+            });
+        }
+
+        bill.name = name;
+        bill.phone = phone;
+        bill.address = address;
+        bill.items = items;
+        bill.total = total;
+        bill.paid = paid;
+        bill.due = due;
+
+        bill.status = due === 0 ? "paid" : "due";
+
+        await bill.save();
+
+        res.status(200).json({
+            message: "Bill updated successfully",
+            bill
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Server error"
+        });
     }
-
-    bill.name = name;
-    bill.phone = phone;
-    bill.address = address;
-    bill.items = items;
-    bill.total = total;
-    bill.paid = paid;
-    bill.due = due;
-
-    bill.status = due === 0 ? "paid" : "due";
-
-    await bill.save();
-
-    res.status(200).json({
-      message: "Bill updated successfully",
-      bill
-    });
-
-  } catch (error) {
-    res.status(500).json({
-      message: "Server error"
-    });
-  }
 };

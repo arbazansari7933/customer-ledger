@@ -35,6 +35,8 @@ import AddBill from "./pages/bills/AddBill";
 import BillPrint from "./pages/bills/BillPrint";
 import EditBill from "./pages/bills/EditBill";
 
+import StockPage from "./pages/products/StockPage";
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -72,6 +74,8 @@ export default function App() {
         <Route path="/purchase-calculator" element={<PurchaseCalculator />} />
         <Route path="/stickers" element={<ProtectedRoute><StickerGenerator/></ProtectedRoute>} />
         <Route path="/addstock" element={<ProtectedRoute><AddStock/></ProtectedRoute>} />
+
+        <Route path="/stocks" element={<ProtectedRoute><StockPage/></ProtectedRoute>} />
 
 
         {/* Redirect base route */}

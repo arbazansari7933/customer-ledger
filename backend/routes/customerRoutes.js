@@ -1,5 +1,6 @@
 import express from "express";
 import authMiddleware from "../middlewares/authMiddleware.js";
+import { checkRole } from "../middlewares/roleMiddleware.js";
 
 import { addCustomer, customerList , customerDetails, deleteCustomer, editCustomer} from "../controllers/customerController.js";
 import { addTransaction, transactionDetails, deleteTransaction, editTransaction} from "../controllers/customerController.js";
@@ -12,9 +13,9 @@ router.get("/", authMiddleware, customerList);
 //Get details of a perticular customer
 router.get("/:customerId", authMiddleware, customerDetails);
 //Delete a customer
-router.delete("/:customerId", authMiddleware, deleteCustomer);
+router.delete("/:customerId", authMiddleware,checkRole(["owner"]), deleteCustomer);
 //Edit detail of a customer
-router.put("/:customerId", authMiddleware, editCustomer);
+router.put("/:customerId", authMiddleware, checkRole(["owner"]), editCustomer);
 
 //Add a transaction (give or receive)
 router.post("/:customerId/transactions", authMiddleware, addTransaction);

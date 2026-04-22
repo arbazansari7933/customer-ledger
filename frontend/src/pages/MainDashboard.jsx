@@ -71,13 +71,15 @@ export default function MainDashboard() {
           </p>
         </Link>
 
+        
+
         <Link
-          to="/addstock"
+          to="/stocks"
           className="group bg-gradient-to-br from-pink-50 to-pink-100 rounded-2xl p-5 text-center shadow hover:shadow-lg transition hover:-translate-y-1"
         >
           <p className="text-4xl group-hover:scale-110 transition">📦</p>
           <p className="font-semibold text-gray-700 mt-2">
-            Add Stock
+            Stocks
           </p>
         </Link>
 

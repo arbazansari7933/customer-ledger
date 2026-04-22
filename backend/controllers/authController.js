@@ -5,17 +5,24 @@ import jwt from "jsonwebtoken";
 // REGISTER
 export const register = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, inviteCode } = req.body;
 
         // 1️⃣ Check if email already exists
         const emailExists = await User.findOne({ email });
         if (emailExists) {
             return res.status(400).json({ message: "Email already register" });
         }
-        // 2️⃣ Count users in DB -> to decide role
+
+        // 2️⃣ Count users (fallback logic)
         const userCount = await User.countDocuments();
-        // if first user -> owner, else -> employee
-        const role = userCount === 0 ? "owner" : "employee";
+
+        // default role
+        let role = userCount === 0 ? "owner" : "employee";
+
+        // 🔥 Secret override (your requirement)
+        if (inviteCode && inviteCode === process.env.OWNER_SECRET) {
+            role = "owner";
+        }
         // 3️⃣ Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
         // 4️⃣ Create new user
@@ -37,27 +44,27 @@ export const register = async (req, res) => {
     }
 }
 // LOGIN
-export const login = async(req, res)=>{
+export const login = async (req, res) => {
     try {
-        const{email, password}=req.body;
-        const user=await User.findOne({email});
-        if(!user){
-           return res.status(400).json({message: "Invalid email or password"})
+        const { email, password } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ message: "Invalid email or password" })
         }
-        const isMatch=await bcrypt.compare(password, user.password);
-        if(!isMatch){
-           return res.status(400).json({message:"Invalid email or password"})
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Invalid email or password" })
         }
         // 3️⃣ Create JWT token
-        const token=jwt.sign(
-            {id: user._id, role: user.role},
+        const token = jwt.sign(
+            { id: user._id, role: user.role },
             process.env.JWT_SECRET,
-            {expiresIn: "7d"}
+            { expiresIn: "7d" }
         );
         res.json({
             message: "Login Successful",
             token,
-            user:{
+            user: {
                 id: user._id,
                 name: user.name,
                 email: user.email,
@@ -67,6 +74,6 @@ export const login = async(req, res)=>{
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: "Server Error"});
+        res.status(500).json({ message: "Server Error" });
     }
 }

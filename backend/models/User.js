@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
             unique: true,
+            lowercase: true,
         },
         password: {
             type: String,
@@ -17,7 +18,7 @@ const userSchema = new mongoose.Schema(
         },
         role: {
             type: String,
-            enum: ["owner", "employee"],
+            enum: ["owner", "employee", "demo"],
             default: "employee",
         },
     },

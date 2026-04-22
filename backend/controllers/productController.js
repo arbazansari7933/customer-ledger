@@ -118,3 +118,26 @@ const qrCode = await generateQR(product.productCode);
     });
   }
 };
+
+//get product categories
+export const getCategories=async(req, res)=>{
+  try {
+    const categories=await Product.distinct("category")
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ message: "Error" });
+  }
+};
+
+//get product by category
+export const getByCategory=async(req, res)=>{
+  try {
+    const products=await Product.find({
+      category: req.params.name
+    });
+    res.json(products);
+
+  } catch (error) {
+    res.status(500).json({ message: "Error" });
+  }
+};

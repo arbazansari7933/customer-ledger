@@ -87,11 +87,19 @@ export default function AddStock() {
             className="w-full border p-2 rounded"
           />
 
-          <input
-            {...register("category")}
-            placeholder="Category"
+          <select
+            {...register("category", { required: true })}
             className="w-full border p-2 rounded"
-          />
+          >
+            <option value="">Select Category</option>
+            <option value="jeans">Jeans</option>
+            <option value="shirt">Shirt</option>
+            <option value="trouser">Trouser</option>
+            <option value="tshirt">T-Shirt</option>
+            <option value="saree">Saree</option>
+            <option value="frock">Frock</option>
+            <option value="suit">Suit</option>
+          </select>
 
           <input
             type="number"
