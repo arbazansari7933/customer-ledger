@@ -46,6 +46,10 @@ export default function AddBill() {
       { itemName: "", qty: 1, mrp: 0, discount: 0 }
     ]);
   };
+  // remove
+  const removeItem = (index) => {
+  setItems((prev) => prev.filter((_, i) => i !== index));
+};
 
   const calculateRate = (mrp, discount) => {
     return mrp - (mrp * discount / 100);
@@ -269,13 +273,14 @@ export default function AddBill() {
 )}
 <br></br>
             {/* Header Row */}
-            <div className="grid grid-cols-6 gap-2 mb-2 text-xs font-semibold text-gray-500 border-b pb-2">
+            <div className="grid grid-cols-[1.5fr_0.8fr_1.2fr_0.8fr_1fr_1fr_0.5fr]  mb-2 text-xs font-semibold text-gray-500 border-b pb-2">
               <div className="px-2">Item</div>
               <div className="text-center px-2">Qty</div>
               <div className="text-center px-2">MRP</div>
               <div className="text-center px-2">Disc%</div>
               <div className="text-center px-2">Rate</div>
               <div className="text-right px-2">Amount</div>
+              <div></div>
             </div>
 
             
@@ -286,14 +291,14 @@ export default function AddBill() {
               const amount = calculateAmount(item.qty, rate);
 
               return (
-                <div key={index} className="grid grid-cols-6 gap-2 mb-3 items-center">
+                <div key={index} className="grid grid-cols-[1.4fr_0.6fr_1.2fr_0.6fr_1fr_1fr_0.4fr] gap-1 mb-2 items-center text-xs">
 
                   {mode === "manual" ? (
                     <input
                       name="itemName"
                       value={item.itemName}
                       onChange={(e) => handleItemChange(index, e)}
-                      className="border p-2 text-sm"
+                      className="border p-2 text-xs"
                     />
                   ) : (
                     <div className="text-sm px-2">{item.itemName}</div>
@@ -305,7 +310,7 @@ export default function AddBill() {
                     value={item.qty}
                     onChange={(e) => handleItemChange(index, e)}
                     //disabled={mode === "scan"}
-                    className="border border-gray-300 rounded-lg p-2 text-sm text-center"
+                    className="border border-gray-300 rounded-lg p-2 text-xs text-center  max-w-[25px]"
                   />
 
                   <input
@@ -314,7 +319,7 @@ export default function AddBill() {
                     value={item.mrp}
                     onChange={(e) => handleItemChange(index, e)}
                    // disabled={mode === "scan"}
-                    className="border border-gray-300 rounded-lg p-2 text-sm text-center"
+                    className="border border-gray-300 rounded-lg p-2 text-xs text-center w-full"
                   />
 
                   <input
@@ -323,19 +328,28 @@ export default function AddBill() {
                     value={item.discount}
                     onChange={(e) => handleItemChange(index, e)}
                     //disabled={mode === "scan"}
-                    className="border border-gray-300 rounded-lg p-2 text-sm text-center"
+                    className="border border-gray-300 rounded-lg p-2 text-xs text-center max-w-[25px]"
                   />
 
-                  <div className="text-center text-sm text-gray-700 font-mono">
+                  <div className="text-center text-xs text-gray-700 font-mono">
                     ₹{rate.toFixed(0)}
                   </div>
 
-                  <div className="text-right font-semibold text-gray-800 font-mono">
+                  <div className="text-center font-semibold text-sm text-gray-800 font-mono">
                     ₹{amount.toFixed(0)}
                   </div>
+                  <button
+  type="button"
+  onClick={() => removeItem(index)}
+  className="text-red-500 hover:text-red-700 text-sm"
+>
+  ✕
+</button>
 
                 </div>
+                
               );
+              
             })}
 
             {mode === "manual" && (
