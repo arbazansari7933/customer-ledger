@@ -26,7 +26,7 @@ app.use("/api/wholesalers", wholesalerRoutes);
 app.use("/api/bills", billRoutes);
 app.use("/api/reports", reportRoutes );
 app.use("/api", backupRoutes);
-app.use("/api/product", productRoutes);
+app.use("/api/products", productRoutes);
 
 app.get("/api", (req, res) => {
   res.send("Backend is running!");

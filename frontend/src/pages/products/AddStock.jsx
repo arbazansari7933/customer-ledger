@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import api from "../utils/api";
+import api from "../../utils/api";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
@@ -18,7 +18,7 @@ export default function AddStock() {
   // 🔹 Submit Stock
   const onSubmit = async (data) => {
     try {
-      const res = await api.post("/product", {
+      const res = await api.post("/products", {
         ...data,
         price: Number(data.price),
         discount: Number(data.discount || 0),
@@ -92,13 +92,13 @@ export default function AddStock() {
             className="w-full border p-2 rounded"
           >
             <option value="">Select Category</option>
-            <option value="jeans">Jeans</option>
-            <option value="shirt">Shirt</option>
-            <option value="trouser">Trouser</option>
-            <option value="tshirt">T-Shirt</option>
-            <option value="saree">Saree</option>
-            <option value="frock">Frock</option>
-            <option value="suit">Suit</option>
+            <option value="Jeans">Jeans</option>
+            <option value="Shirt">Shirt</option>
+            <option value="Trouser">Trouser</option>
+            <option value="Tshirt">T-Shirt</option>
+            <option value="Saree">Saree</option>
+            <option value="Frock">Frock</option>
+            <option value="Suit">Suit</option>
           </select>
 
           <input

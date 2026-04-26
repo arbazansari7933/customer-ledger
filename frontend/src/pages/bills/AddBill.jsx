@@ -141,7 +141,7 @@ export default function AddBill() {
   scanLockRef.current = true;
 
   try {
-    const res = await api.get(`/product/${code}`);
+    const res = await api.get(`/products/${code}`);
     addToCart(res.data.product);
 
     //  PLAY BEEP
@@ -246,8 +246,28 @@ export default function AddBill() {
           {/* Items Section */}
           <div className="bg-white rounded-xl shadow p-4 mb-4">
 
-            <p className="font-semibold text-gray-700 mb-3">Items</p>
+           <p className="font-semibold text-gray-800 mb-3">Scan Product</p>
 
+{mode === "scan" && (
+  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
+
+    {/* HEADER */}
+    <div className="flex justify-between items-center mb-3">
+      <p className="text-sm text-gray-600">
+        📷 Align QR code inside the box
+      </p>
+
+      
+    </div>
+
+    {/* SCANNER BOX */}
+    <div className="rounded-lg overflow-hidden border border-gray-300">
+      <Scanner onScanSuccess={handleScan} />
+    </div>
+
+  </div>
+)}
+<br></br>
             {/* Header Row */}
             <div className="grid grid-cols-6 gap-2 mb-2 text-xs font-semibold text-gray-500 border-b pb-2">
               <div className="px-2">Item</div>
@@ -258,9 +278,7 @@ export default function AddBill() {
               <div className="text-right px-2">Amount</div>
             </div>
 
-            <div style={{ display: mode === "scan" ? "block" : "none" }}>
-  <Scanner onScanSuccess={handleScan} />
-</div>
+            
 
             {items.map((item, index) => {
 

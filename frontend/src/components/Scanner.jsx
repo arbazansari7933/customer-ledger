@@ -1,43 +1,89 @@
-import { useEffect, useRef } from "react";
-import { Html5QrcodeScanner } from "html5-qrcode";
+import { useRef, useState } from "react";
+import { Html5Qrcode } from "html5-qrcode";
 
-const Scanner = ({ onScanSuccess }) => {
+export default function Scanner({ onScanSuccess }) {
+  const html5QrCode = useRef(null);
+  const [isScanning, setIsScanning] = useState(false);
 
-  const scannerRef = useRef(null);
+  const startScanner = async () => {
+    if (!html5QrCode.current) {
+      html5QrCode.current = new Html5Qrcode("reader");
+    }
 
-  useEffect(() => {
+    try {
+      await html5QrCode.current.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 220 },
+        (decodedText) => {
+          onScanSuccess(decodedText);
+        }
+      );
+      setIsScanning(true);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-    // 🔥 PREVENT DOUBLE INIT
-    if (scannerRef.current) return;
+  const stopScanner = async () => {
+    if (html5QrCode.current && isScanning) {
+      try {
+        await html5QrCode.current.stop();
+      } catch {}
+      setIsScanning(false);
+    }
+  };
 
-    const scanner = new Html5QrcodeScanner(
-      "reader",
-      {
-        fps: 10,
-        qrbox: { width: 250, height: 250 }
-      },
-      false
-    );
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-    scanner.render(
-      (decodedText) => {
-        onScanSuccess(decodedText);
-      },
-      () => {}
-    );
+    if (!html5QrCode.current) {
+      html5QrCode.current = new Html5Qrcode("reader");
+    }
 
-    scannerRef.current = scanner;
+    try {
+      const result = await html5QrCode.current.scanFile(file, true);
+      onScanSuccess(result);
+    } catch {
+      alert("Invalid QR Code");
+    }
+  };
 
-    return () => {
-      if (scannerRef.current) {
-        scannerRef.current.clear().catch(() => {});
-        scannerRef.current = null;
-      }
-    };
+  return (
+    <div className="bg-white rounded-xl shadow p-4 text-center">
 
-  }, []);
+      <div className="flex gap-2 justify-center mb-3">
 
-  return <div id="reader" style={{ width: "100%" }} />;
-};
+        {!isScanning ? (
+          <button
+            onClick={startScanner}
+            className="bg-green-600 text-white px-4 py-2 rounded"
+          >
+            Start Camera
+          </button>
+        ) : (
+          <button
+            onClick={stopScanner}
+            className="bg-red-600 text-white px-4 py-2 rounded"
+          >
+            Stop
+          </button>
+        )}
 
-export default Scanner;
+        <label className="bg-gray-200 px-4 py-2 rounded cursor-pointer">
+          Upload
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="hidden"
+          />
+        </label>
+
+      </div>
+
+      <div id="reader" className="w-full max-w-sm mx-auto"></div>
+
+    </div>
+  );
+}

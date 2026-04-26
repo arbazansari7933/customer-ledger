@@ -8,7 +8,7 @@ import Reports from "./pages/Reports";
 import Settings from "./pages/Settings";
 import PurchaseCalculator from "./pages/PurchaseCalculator";
 import StickerGenerator from "./pages/StickerGenerator";
-import AddStock from "./pages/AddStock";
+import AddStock from "./pages/products/AddStock";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
