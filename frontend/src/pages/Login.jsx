@@ -6,6 +6,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 const Login = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const [message, setMessage] = useState("");
+  const [role, setRole] = useState("");
   const navigate=useNavigate();
 
   const onSubmit= async(data)=>{
@@ -13,6 +14,8 @@ const Login = () => {
         const res=await api.post("/auth/login", data);
         localStorage.setItem("token", res.data.token)
         setMessage(res.data.message);
+        setRole(res.data.user.role);
+        alert(`Logined as: ${res.data.user.role}`);
         console.log("Login Response:", res.data);
         reset();
         navigate(`/`)
@@ -38,6 +41,7 @@ const Login = () => {
     {message && (
       <p className="text-center text-red-500 text-sm">{message}</p>
     )}
+
 
     {/* Email */}
     <div>

@@ -35,7 +35,7 @@ export default function BillDetails() {
         const res = await api.delete(`/bills/${id}`);
         navigate(`/bills`);
       } catch (error) {
-        console.log(error.response?.data?.message || "Something went wrong");
+        alert(error.response?.data?.message || "Something went wrong");
       }
     }
 

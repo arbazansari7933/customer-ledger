@@ -11,6 +11,8 @@ export default function WholesalerDetails() {
   const [wholesaler, setWholesaler] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [messageAccess, setMessageAccess] = useState("");
+
 
 
   useEffect(() => {
@@ -53,13 +55,12 @@ export default function WholesalerDetails() {
       return;
     }
     try {
-      const res = await api.delete(`/wholesalers/${id}`);
+      const res = await api.delete(`/wholesalers/${id}`);      
       navigate(`/wholesalers`);
     } catch (error) {
-      console.log(error.response?.data?.message || "Something went wrong");
+      alert(error.response?.data?.message || "Something went wrong");
     }
   }
-
   return (
     <div className="min-h-screen bg-gray-100 px-4 sm:px-6 py-6">
 

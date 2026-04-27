@@ -50,7 +50,7 @@ export default function CustomerDetails() {
       const res = await api.delete(`/customers/${id}`);
       navigate(`/customers`);
     } catch (error) {
-      console.log(error.response?.data?.message || "Something went wrong");
+      alert(error.response?.data?.message || "Something went wrong");
     }
   }
   const handleWhatsAppReminder = () => {

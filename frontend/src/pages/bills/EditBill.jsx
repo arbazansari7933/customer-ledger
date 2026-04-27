@@ -113,7 +113,7 @@ export default function EditBill() {
       navigate(`/bill/${id}`);
 
     } catch (error) {
-      console.log(error.response?.data?.message || "Error updating bill");
+      alert(error.response?.data?.message || "Error updating bill");
     } finally {
       setIsSubmitting(false);
     }

@@ -13,17 +13,17 @@ router.get("/", authMiddleware, customerList);
 //Get details of a perticular customer
 router.get("/:customerId", authMiddleware, customerDetails);
 //Delete a customer
-router.delete("/:customerId", authMiddleware,checkRole(["owner"]), deleteCustomer);
+router.delete("/:customerId", authMiddleware, checkRole(["owner"]), deleteCustomer);
 //Edit detail of a customer
 router.put("/:customerId", authMiddleware, checkRole(["owner"]), editCustomer);
 
 //Add a transaction (give or receive)
-router.post("/:customerId/transactions", authMiddleware, addTransaction);
+router.post("/:customerId/transactions", authMiddleware, checkRole(["owner"]), addTransaction);
 //transaction in detail
 router.get("/:customerId/transactions/:transactionId", authMiddleware, transactionDetails);
 //Delete a particular transaction
-router.delete("/:customerId/transactions/:transactionId", authMiddleware, deleteTransaction);
+router.delete("/:customerId/transactions/:transactionId", authMiddleware, checkRole(["owner"]), deleteTransaction);
 //Edit a particular transaction
-router.put("/:customerId/transactions/:transactionId", authMiddleware, editTransaction);
+router.put("/:customerId/transactions/:transactionId", authMiddleware, checkRole(["owner"]), editTransaction);
 
 export default router;
