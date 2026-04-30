@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import api from "../../utils/api";
 import BillCard from "../../components/BillCard";
+import Navbar from "../../components/Navbar";
+import BottomNavbar from "../../components/BottomNavbar";
 
 export default function BillsDashboard() {
 
@@ -65,15 +67,9 @@ export default function BillsDashboard() {
       
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-
-      {/* Back */}
-      <button
-        onClick={() => navigate(`/`)}
-        className="text-green-600 text-sm hover:underline"
-      >
-        ← Back
-      </button>
+    <div className="min-h-screen bg-gray-100 pb-16">
+  {/* <Navbar /> */}
+  <div className="p-4">
 
       {/* TOP BAR */}
       <div className="flex items-center justify-between mb-4">
@@ -153,5 +149,7 @@ export default function BillsDashboard() {
       </div>
 
     </div>
+  <BottomNavbar />
+</div>
   );
 }

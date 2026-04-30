@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import CustomerCard from "../../components/CustomerCard";
 import { useNavigate } from "react-router-dom";
-
+import Navbar from "../../components/Navbar";
+import BottomNavbar from "../../components/BottomNavbar";
 
 const Dashboard = () => {
     const [data, setData] = useState([]);
@@ -48,15 +49,12 @@ const Dashboard = () => {
         
 
     return (
-        <div className="min-h-screen bg-gray-100 p-4">
-          {/* Back Button */}
-          <button
-            onClick={() => navigate(`/`)}
-            className="text-green-600 text-sm hover:underline"
-          >
-            ← Back
-          </button>
+       <div className="min-h-screen bg-gray-100 pb-16">
+            {/* <Navbar /> */}
 
+            <div className="p-4">
+          {/* Back Button */}
+          
   {/* TOP BAR */}
   <div className="flex items-center justify-between mb-4">
     
@@ -118,7 +116,10 @@ const Dashboard = () => {
     ))}
 
   </div>
-</div>
+  </div>
+
+            <BottomNavbar />
+        </div>
 
 
 

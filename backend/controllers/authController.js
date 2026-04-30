@@ -7,13 +7,13 @@ export const register = async (req, res) => {
     try {
         const { name, email, password, inviteCode } = req.body;
 
-        // 1️⃣ Check if email already exists
+        // Check if email already exists
         const emailExists = await User.findOne({ email });
         if (emailExists) {
             return res.status(400).json({ message: "Email already register" });
         }
 
-        // 2️⃣ Count users (fallback logic)
+        // Count users (fallback logic)
         const userCount = await User.countDocuments();
 
         // default role
@@ -23,16 +23,16 @@ export const register = async (req, res) => {
         if (inviteCode && inviteCode === process.env.OWNER_SECRET) {
             role = "owner";
         }
-        // 3️⃣ Hash password
+        //  Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
-        // 4️⃣ Create new user
+        //  Create new user
         const newUser = await User.create({
             name,
             email,
             password: hashedPassword,
             role,
         });
-        // 5️⃣ Return response
+        // Return response
         return res.status(201).json({
             message: "User Created Successfully",
             roleAssigned: role,
@@ -55,7 +55,7 @@ export const login = async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: "Invalid email or password" })
         }
-        // 3️⃣ Create JWT token
+        // Create JWT token
         const token = jwt.sign(
             { id: user._id, role: user.role },
             process.env.JWT_SECRET,

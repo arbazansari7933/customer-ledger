@@ -16,7 +16,7 @@ const Login = () => {
         setMessage(res.data.message);
         setRole(res.data.user.role);
         alert(`Logined as: ${res.data.user.role}`);
-        console.log("Login Response:", res.data);
+        //console.log("Login Response:", res.data);
         reset();
         navigate(`/`)
         

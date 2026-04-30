@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import DevNotice from "../components/DevNotice";
 import api from "../utils/api";
+import Navbar from "../components/Navbar";
+import BottomNavbar from "../components/BottomNavbar";
 
 export default function Reports() {
 
@@ -54,15 +56,9 @@ export default function Reports() {
   
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-
-      {/* BACK */}
-      <button
-        onClick={() => navigate(-1)}
-        className="text-green-600 text-sm hover:underline mb-4"
-      >
-        ← Back
-      </button>
+    <div className="min-h-screen bg-gray-100 pb-16">
+  {/* <Navbar /> */}
+  <div className="p-4">
 
       <h1 className="text-xl font-semibold text-gray-800 mb-4">
         Reports
@@ -163,6 +159,8 @@ export default function Reports() {
         )}
       </div>
 
-    </div>
+      </div>
+  <BottomNavbar />
+</div>
   );
 }

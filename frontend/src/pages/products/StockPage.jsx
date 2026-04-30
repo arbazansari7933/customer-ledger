@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../utils/api";
-
+import BottomNavbar from "../../components/BottomNavbar";
 export default function StockPage() {
 
   const [categories, setCategories] = useState([]);
@@ -54,8 +54,7 @@ const totalValue = products.reduce(
 });
 
 return (
-  <div className="min-h-screen bg-gray-100 p-4">
-
+<div className="min-h-screen bg-gray-100 p-4 pb-16">
     <div className="max-w-5xl mx-auto">
 
       {/* 🔥 HEADER */}
@@ -178,6 +177,8 @@ return (
       )}
 
     </div>
-  </div>
+    
+   <BottomNavbar />
+</div>
 );
 }

@@ -39,7 +39,6 @@ import StockPage from "./pages/products/StockPage";
 
 export default function App() {
   return (
-    <BrowserRouter>
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
@@ -81,6 +80,5 @@ export default function App() {
         {/* Redirect base route */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
-    </BrowserRouter>
   );
 }

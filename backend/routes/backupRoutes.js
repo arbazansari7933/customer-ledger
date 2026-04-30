@@ -2,6 +2,7 @@
 
 import express from "express";
 import multer from "multer";
+import authMiddleware from "../middlewares/authMiddleware.js";
 import { restoreBackup, downloadBackup } from "../controllers/backupController.js";
 import { checkRole } from "../middlewares/roleMiddleware.js";
 
@@ -14,6 +15,6 @@ const upload = multer({ dest: "uploads/" });
 router.get("/backup", downloadBackup);
 
 // ✅ RESTORE (upload)
-router.post("/restore", upload.single("file"), checkRole(["owner"]), restoreBackup);
+router.post("/restore", authMiddleware, checkRole(["owner"]), upload.single("file"),  restoreBackup);
 
 export default router;

@@ -3,6 +3,7 @@ import api from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 import Scanner from "../../components/Scanner"; // adjust path
 import { useRef } from "react";
+import BottomNavbar from "../../components/BottomNavbar";
 
 
 
@@ -163,8 +164,7 @@ export default function AddBill() {
 
   return (
 
-    <div className="min-h-screen bg-gray-100 px-4 py-6">
-
+<div className="min-h-screen bg-gray-100 px-4 py-6 pb-20">
 
       <div className="max-w-xl mx-auto">
 
@@ -407,6 +407,7 @@ export default function AddBill() {
         </form>
 
       </div>
+      <BottomNavbar />
     </div>
   );
 }

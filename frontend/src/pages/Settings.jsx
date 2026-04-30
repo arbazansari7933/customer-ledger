@@ -1,6 +1,8 @@
 import { useNavigate, Link } from "react-router-dom";
 import DevNotice from "../components/DevNotice";
 import api from "../utils/api";
+import Navbar from "../components/Navbar";
+import BottomNavbar from "../components/BottomNavbar";
 
 export default function Settings() {
 
@@ -58,15 +60,9 @@ export default function Settings() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-
-      {/* Back */}
-      <button
-        onClick={() => navigate(-1)}
-        className="text-green-600 text-sm hover:underline mb-4"
-      >
-        ← Back
-      </button>
+    <div className="min-h-screen bg-gray-100 pb-16">
+  {/* <Navbar /> */}
+  <div className="p-4">
 
       {/* Header */}
       <div className="bg-white rounded-xl shadow p-4 mb-4">
@@ -181,6 +177,8 @@ export default function Settings() {
         </div>
 
       </div>
-    </div>
+      </div>
+  <BottomNavbar />
+</div>
   );
 }
