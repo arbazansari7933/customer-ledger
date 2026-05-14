@@ -291,18 +291,22 @@ export default function AddBill() {
               const amount = calculateAmount(item.qty, rate);
 
               return (
-                <div key={index} className="grid grid-cols-[1.4fr_0.6fr_1.2fr_0.6fr_1fr_1fr_0.4fr] gap-1 mb-2 items-center text-xs">
+                <div key={index} className="grid grid-cols-[1.3fr_0.6fr_1.1fr_0.3fr_1fr_1fr_0.4fr] gap-1 mb-2 items-center text-xs">
 
                   {mode === "manual" ? (
                     <input
                       name="itemName"
                       value={item.itemName}
                       onChange={(e) => handleItemChange(index, e)}
-                      className="border p-2 text-xs"
-                    />
+className="border p-2 text-xs w-full max-w-[90px] rounded-lg"
+                 />
                   ) : (
-                    <div className="text-sm px-2">{item.itemName}</div>
-                  )}
+<div
+  title={item.itemName}
+  className="text-sm px-2 truncate whitespace-nowrap overflow-hidden max-w-[90px]"
+>
+  {item.itemName}
+</div>               )}
 
                   <input
                     name="qty"
@@ -319,8 +323,7 @@ export default function AddBill() {
                     value={item.mrp}
                     onChange={(e) => handleItemChange(index, e)}
                    // disabled={mode === "scan"}
-                    className="border border-gray-300 rounded-lg p-2 text-xs text-center w-full"
-                  />
+className="border border-gray-300 rounded-lg p-2 text-xs text-center w-[50px]"                 />
 
                   <input
                     name="discount"
@@ -328,7 +331,7 @@ export default function AddBill() {
                     value={item.discount}
                     onChange={(e) => handleItemChange(index, e)}
                     //disabled={mode === "scan"}
-                    className="border border-gray-300 rounded-lg p-2 text-xs text-center max-w-[25px]"
+className="border border-gray-300 rounded-lg p-2 text-xs text-center max-w-[35px]"
                   />
 
                   <div className="text-center text-xs text-gray-700 font-mono">

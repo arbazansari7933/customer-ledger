@@ -51,7 +51,7 @@ const WholesalerDashboard = () => {
 
     return (
        <div className="min-h-screen bg-gray-100 pb-16">
-  <Navbar />
+  {/* <Navbar /> */}
   <div className="p-4">
 
   {/* TOP BAR */}
