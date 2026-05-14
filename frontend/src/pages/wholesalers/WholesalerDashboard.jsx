@@ -5,7 +5,7 @@ import WholesalerCard from "../../components/WholesaleCard"
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import BottomNavbar from "../../components/BottomNavbar";
-
+import { Search } from "lucide-react";
 
 const WholesalerDashboard = () => {
     const [data, setData] = useState([]);
@@ -90,9 +90,10 @@ const WholesalerDashboard = () => {
                focus:ring-2 focus:ring-green-400 outline-none"
   />
 
-  <span className="absolute left-3 top-2.5 text-gray-400">
-    🔍
-  </span>
+ <Search
+  size={18}
+  className="absolute left-3 top-3 text-gray-400"
+/>
 </div>
 
   {/* LABEL */}

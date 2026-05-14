@@ -5,6 +5,7 @@ import CustomerCard from "../../components/CustomerCard";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import BottomNavbar from "../../components/BottomNavbar";
+import { Search } from "lucide-react";
 
 const Dashboard = () => {
     const [data, setData] = useState([]);
@@ -82,15 +83,23 @@ const Dashboard = () => {
   </div>
 
  {/* SEARCH BAR */}
-<div className="mb-4">
+{/* SEARCH BAR */}
+<div className="mb-4 relative">
+
   <input
     type="text"
-    placeholder="🔎 Search by name or phone number..."
+    placeholder="Search by name or phone number..."
     value={search}
     onChange={(e) => setSearch(e.target.value)}
-    className="w-full h-11 px-4 border border-gray-300 rounded-lg bg-white shadow-sm 
+    className="w-full h-11 pl-10 pr-4 border border-gray-300 rounded-lg bg-white shadow-sm 
                focus:ring-2 focus:ring-green-400 outline-none"
   />
+
+  <Search
+    size={18}
+    className="absolute left-3 top-3 text-gray-400"
+  />
+
 </div>
 
   {/* LABEL */}

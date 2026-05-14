@@ -4,6 +4,7 @@ import api from "../../utils/api";
 import BillCard from "../../components/BillCard";
 import Navbar from "../../components/Navbar";
 import BottomNavbar from "../../components/BottomNavbar";
+import { Search } from "lucide-react";
 
 export default function BillsDashboard() {
 
@@ -103,19 +104,23 @@ export default function BillsDashboard() {
       </div>
 
       {/* SEARCH BAR */}
-      <div className="mb-4">
+<div className="mb-4 relative">
 
-        <input
-          type="text"
-          placeholder="🔎 Search by name, phone or bill id..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full h-11 px-4 border border-gray-300 rounded-lg bg-white shadow-sm
-                     focus:ring-2 focus:ring-green-400 outline-none"
-        />
+  <input
+    type="text"
+    placeholder="Search by name, phone or bill id..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="w-full h-11 pl-10 pr-4 border border-gray-300 rounded-lg bg-white shadow-sm
+               focus:ring-2 focus:ring-green-400 outline-none"
+  />
 
-      </div>
+  <Search
+    size={18}
+    className="absolute left-3 top-3 text-gray-400"
+  />
 
+</div>
       {/* BILL COUNT */}
       <p className="text-gray-500 text-sm mb-2">
         Bills:
