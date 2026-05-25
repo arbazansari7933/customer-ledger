@@ -109,28 +109,28 @@ Thank You !!`;
     {/* ACTIONS */}
     <div className="flex items-center gap-2">
 
-      {/* CALL */}
-      <a
-        href={`tel:${customer.phone}`}
-        className="flex items-center gap-1 px-2.5 py-1 text-xs bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 transition"
-      >
-        <FaPhoneAlt size={10} />
-        Call
-      </a>
+     {/* CALL */}
+<a
+  href={`tel:${customer.phone}`}
+  className="flex items-center gap-1 px-3 py-1.5 text-sm bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 transition"
+>
+  <FaPhoneAlt size={12} />
+  Call
+</a>
 
-      {/* REMINDER */}
-      <button
-        onClick={handleWhatsAppReminder}
-        className="flex items-center gap-1 px-2.5 py-1 text-xs bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600 transition"
-      >
-        <FaWhatsapp size={12} />
-        Reminder
-      </button>
+{/* REMINDER */}
+<button
+  onClick={handleWhatsAppReminder}
+  className="flex items-center gap-1 px-3 py-1.5 text-sm bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600 transition"
+>
+  <FaWhatsapp size={14} />
+  Reminder
+</button>
 
       {/* 3 DOT MENU */}
       <details className="relative">
 
-        <summary className="list-none cursor-pointer text-2xl text-gray-600 px-1 select-none">
+        <summary className="list-none cursor-pointer text-3xl text-gray-600 px-1 select-none">
           ⋮
         </summary>
 
