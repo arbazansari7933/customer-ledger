@@ -2,7 +2,7 @@ import api from "../../utils/api";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import TransactionCard from "../../components/TransactionCard";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaWhatsapp, FaPhoneAlt } from "react-icons/fa";
 
 export default function CustomerDetails() {
 
@@ -131,18 +131,34 @@ Thank You !!`;
         </h1>
 
         <div className="flex items-center justify-between mt-1">
-          <p className="text-gray-600 text-sm sm:text-base">
-            {customer.phone}
-          </p>
 
-          <button
-            onClick={handleWhatsAppReminder}
-            className="flex items-center gap-1.5 px-3 py-1 text-lg bg-green-500 text-white rounded-lg shadow-sm hover:bg-green-600 transition"
-          >
-            <FaWhatsapp size={19} />
-            Reminder
-          </button>
-        </div>
+  <p className="text-gray-600 text-sm sm:text-base">
+    {customer.phone}
+  </p>
+
+  <div className="flex gap-2">
+
+    {/* CALL BUTTON */}
+    <a
+      href={`tel:${customer.phone}`}
+      className="flex items-center gap-2 px-3 py-2 text-sm bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition"
+    >
+      <FaPhoneAlt size={13} />
+      Call
+    </a>
+
+    {/* WHATSAPP REMINDER */}
+    <button
+      onClick={handleWhatsAppReminder}
+      className="flex items-center gap-2 px-3 py-2 text-sm bg-green-500 text-white rounded-lg shadow-sm hover:bg-green-600 transition"
+    >
+      <FaWhatsapp size={17} />
+      Reminder
+    </button>
+
+  </div>
+
+</div>
         {customer.address && (
           <p className="text-gray-500 text-sm mt-1">{customer.address}</p>
         )}
