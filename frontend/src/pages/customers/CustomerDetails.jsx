@@ -93,83 +93,94 @@ Thank You !!`;
     <div className="min-h-screen bg-gray-100 px-4 sm:px-6 py-6">
 
       {/* Top Section */}
-      <div className="mb-6 w-full max-w-xl mx-auto bg-white shadow-sm rounded-xl p-5 sm:p-6">
+<div className="mb-6 w-full max-w-xl mx-auto bg-white shadow-sm rounded-xl p-5 sm:p-6">
 
-        {/* Top Row: Back button + Edit/Delete */}
-        <div className="flex justify-between items-start mb-3">
+  {/* TOP BAR */}
+  <div className="flex justify-between items-center mb-4">
 
-          {/* Back Button */}
-          <button
-            onClick={() => navigate(`/customers`)}
-            className="text-green-600 text-sm hover:underline"
+    {/* BACK BUTTON */}
+    <button
+      onClick={() => navigate(`/customers`)}
+      className="text-green-600 text-sm hover:underline"
+    >
+      ← Back
+    </button>
+
+    {/* ACTIONS */}
+    <div className="flex items-center gap-2">
+
+      {/* CALL */}
+      <a
+        href={`tel:${customer.phone}`}
+        className="flex items-center gap-1 px-2.5 py-1 text-xs bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 transition"
+      >
+        <FaPhoneAlt size={10} />
+        Call
+      </a>
+
+      {/* REMINDER */}
+      <button
+        onClick={handleWhatsAppReminder}
+        className="flex items-center gap-1 px-2.5 py-1 text-xs bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600 transition"
+      >
+        <FaWhatsapp size={12} />
+        Reminder
+      </button>
+
+      {/* 3 DOT MENU */}
+      <details className="relative">
+
+        <summary className="list-none cursor-pointer text-2xl text-gray-600 px-1 select-none">
+          ⋮
+        </summary>
+
+        <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden z-10">
+
+          <Link
+            to={`/customer/${id}/edit-customer`}
+            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition"
           >
-            ← Back
+            Edit
+          </Link>
+
+          <button
+            onClick={handleDelete}
+            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition"
+          >
+            Delete
           </button>
-
-          {/* Edit + Delete Buttons */}
-          <div className="flex gap-2">
-            <Link
-              to={`/customer/${id}/edit-customer`}
-              className="px-3 py-1.5 text-sm bg-white text-green-600 border border-green-600 rounded-lg shadow-sm hover:bg-green-50 transition"
-            >
-              Edit
-            </Link>
-
-            <button
-              onClick={handleDelete}
-              className="px-3 py-1.5 text-sm bg-red-600 text-white rounded-lg shadow-sm hover:bg-red-700 transition"
-            >
-              Delete
-            </button>
-          </div>
 
         </div>
 
-        {/* Customer Info */}
-        <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800">
-          {customer.name}
-        </h1>
+      </details>
 
-        <div className="flex items-center justify-between mt-1">
-
-  <p className="text-gray-600 text-sm sm:text-base">
-    {customer.phone}
-  </p>
-
-  <div className="flex flex-col gap-1">
-
-    {/* CALL BUTTON */}
-    <a
-      href={`tel:${customer.phone}`}
-      className="flex items-center justify-center gap-1 px-3 py-1 text-xs bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 transition"
-    >
-      <FaPhoneAlt size={10} />
-      Call
-    </a>
-
-    {/* WHATSAPP BUTTON */}
-    <button
-      onClick={handleWhatsAppReminder}
-      className="flex items-center justify-center gap-1 px-3 py-1 text-xs bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600 transition"
-    >
-      <FaWhatsapp size={12} />
-      Reminder
-    </button>
+    </div>
 
   </div>
 
+  {/* CUSTOMER INFO */}
+  <h1 className="text-2xl sm:text-3xl font-semibold text-gray-800 leading-tight">
+    {customer.name}
+  </h1>
+
+  <p className="text-gray-600 text-sm sm:text-base mt-1">
+    {customer.phone}
+  </p>
+
+  {customer.address && (
+    <p className="text-gray-500 text-xs mt-0.5">
+      {customer.address}
+    </p>
+  )}
+
+  {/* BALANCE */}
+  <p
+    className={`text-3xl sm:text-4xl font-bold mt-5 ${balanceColor}`}
+  >
+    ₹ {customer.balance}
+  </p>
+
 </div>
-        {customer.address && (
-          <p className="text-gray-500 text-sm mt-1">{customer.address}</p>
-        )}
-
-        <p
-          className={`text-3xl sm:text-4xl font-bold mt-4 ${balanceColor}`}
-        >
-          ₹ {customer.balance}
-        </p>
-
-      </div>
 
       {/* Action Buttons */}
       <div className="w-full max-w-xl mx-auto mb-6 flex gap-3">
