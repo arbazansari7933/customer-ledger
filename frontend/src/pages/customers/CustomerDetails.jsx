@@ -136,12 +136,12 @@ Thank You !!`;
     {customer.phone}
   </p>
 
-  <div className="flex gap-1.5">
+  <div className="flex flex-col gap-1">
 
     {/* CALL BUTTON */}
     <a
       href={`tel:${customer.phone}`}
-      className="flex items-center gap-1 px-2 py-1 text-xs bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 transition"
+      className="flex items-center justify-center gap-1 px-3 py-1 text-xs bg-blue-600 text-white rounded-md shadow-sm hover:bg-blue-700 transition"
     >
       <FaPhoneAlt size={10} />
       Call
@@ -150,7 +150,7 @@ Thank You !!`;
     {/* WHATSAPP BUTTON */}
     <button
       onClick={handleWhatsAppReminder}
-      className="flex items-center gap-1 px-2 py-1 text-xs bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600 transition"
+      className="flex items-center justify-center gap-1 px-3 py-1 text-xs bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600 transition"
     >
       <FaWhatsapp size={12} />
       Reminder
