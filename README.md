@@ -3,7 +3,7 @@
 [🔴 Live Demo](https://customer-ledger-chi.vercel.app/) •
 [📂 Repository](https://github.com/arbazansari7933/customer-ledger)
 
-A mobile-first retail management system built with the MERN stack for KGN Collection, currently used in production for billing, inventory management, and customer credit tracking.
+A mobile retail management system built with the MERN stack for KGN Collection, currently used in production for billing, inventory management, and customer credit tracking.
 
 ---
 
