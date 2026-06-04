@@ -22,15 +22,15 @@ A mobile-first retail management system built with the MERN stack for KGN Collec
 ## Screenshots
 
 <p align="center">
-  <img src="./screenshots/stock.jpeg" width="220">
-  <img src="./screenshots/ledger.jpeg" width="220">
-  <img src="./screenshots/qr-billing.jpeg" width="220">
+  <img src="./screenshots/Stock.jpeg" width="220">
+  <img src="./screenshots/Ledger.jpeg" width="220">
+  <img src="./screenshots/Bill1.jpeg" width="220">
 </p>
 
 <p align="center">
-  <img src="./screenshots/reports.jpeg" width="220">
-  <img src="./screenshots/bills-dashboard.jpeg" width="220">
-  <img src="./screenshots/bill-summary.jpeg" width="220">
+  <img src="./screenshots/Report.jpeg" width="220">
+  <img src="./screenshots/Bill3.jpeg" width="220">
+  <img src="./screenshots/Bill2.jpeg" width="220">
 </p>
 
 ---
