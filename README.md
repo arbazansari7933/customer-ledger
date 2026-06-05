@@ -1,5 +1,18 @@
 # KGN Collection — Shop Management System
 
+![MERN](https://img.shields.io/badge/MERN-Full%20Stack-green)
+![React](https://img.shields.io/badge/Frontend-React-blue)
+![Node.js](https://img.shields.io/badge/Backend-Node.js-green)
+![MongoDB](https://img.shields.io/badge/Database-MongoDB-darkgreen)
+![JWT](https://img.shields.io/badge/Auth-JWT-orange)
+![PWA](https://img.shields.io/badge/PWA-Mobile--First-purple)
+![QR Billing](https://img.shields.io/badge/Billing-QR%20Based-red)
+![Inventory](https://img.shields.io/badge/Inventory-Auto%20Stock%20Tracking-blueviolet)
+![PDF](https://img.shields.io/badge/PDF-Thermal%20Printing-success)
+![WhatsApp](https://img.shields.io/badge/Communication-WhatsApp%20%26%20Call-25D366)
+![Status](https://img.shields.io/badge/Status-Production%20Ready-success)
+
+
 [🔴 Live Demo](https://customer-ledger-chi.vercel.app/) •
 [📂 Repository](https://github.com/arbazansari7933/customer-ledger)
 
