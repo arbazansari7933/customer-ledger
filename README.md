@@ -3,19 +3,21 @@
 [🔴 Live Demo](https://customer-ledger-chi.vercel.app/) •
 [📂 Repository](https://github.com/arbazansari7933/customer-ledger)
 
-A mobile-first retail management system built with the MERN stack for KGN Collection, currently used in production for billing, inventory management, and customer credit tracking.
+A mobile-first retail shop management web application built with the MERN stack, featuring QR-based automatic billing, inventory management with automatic stock deduction, customer and wholesaler ledgers, QR sticker generation, PDF and thermal bill printing, sales reporting, and WhatsApp/call integration. Built for KGN Collection and actively used in production.
 
 ---
 
 ## Highlights
 
-- QR-based product scanning for billing
-- Automatic stock deduction on sale
+- QR-based automatic product billing
+- Inventory management with automatic stock deduction
 - Customer & wholesaler ledger management
-- QR sticker generation with PDF export
+- QR sticker generation for products
+- PDF & thermal bill printing
 - Daily sales reporting
+- WhatsApp & call integration
 - Backup & restore system
-- PWA support for mobile installation
+- Progressive Web App (PWA) support
 
 ---
 
@@ -36,13 +38,25 @@ A mobile-first retail management system built with the MERN stack for KGN Collec
 ---
 
 ## The Problem This Solves
-Most small retail shops in India still write bills by hand or use basic calculators. Two things go wrong constantly:
 
-**At billing** — the employee manually searches for a product, types the name, price, and discount. One typo = wrong bill. One forgotten discount = customer complaint. One missed item = revenue loss.
+Many small retail shops still rely on handwritten bills, calculators, and manual stock tracking.
 
-**At stock** — when the owner is away, there's no way to know if the employee sold items at the wrong price, gave an unauthorized discount, or simply didn't record a sale at all. The stock count drifts, and by the time the owner notices, it's already a mess.
+### Billing Problems
 
-This app fixes both.
+- Manual product entry
+- Incorrect prices
+- Missed discounts
+- Duplicate entries
+- Slow checkout process
+
+### Inventory Problems
+
+- Stock mismatch
+- Untracked sales
+- No visibility when the owner is away
+- Difficult reconciliation
+
+This web-app solves these issues using QR-based billing and automatic inventory synchronization.
 
 ---
 
