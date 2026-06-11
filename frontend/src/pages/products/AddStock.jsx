@@ -162,6 +162,7 @@ export default function AddStock() {
                   fontSize: "23px",
                   fontWeight: "bold",
                   textAlign: "center",
+                  transform: "translateX(-4px)",
                   // borderBottom: "1px solid #000",
                   paddingBottom: "3px",
                   marginBottom: "5px",
