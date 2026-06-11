@@ -11,7 +11,6 @@ export default function AddStock() {
   const [qr, setQr] = useState("");
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(0);
-  const [printCount, setPrintCount] = useState(1);
 
   const stickerRef = useRef();
 
@@ -40,36 +39,33 @@ export default function AddStock() {
     }
   };
 
-  // 🔹 Print Stickers (PDF)
+  //Print Stickers (PDF)
   const downloadSticker = async () => {
     const element = stickerRef.current;
 
-    const canvas = await html2canvas(element, { scale: 3 });
-    const imgData = canvas.toDataURL("image/png");
-
-    const stickerWidth = 60;
-    const stickerHeight = 40;
-
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: [stickerWidth, stickerHeight * printCount],
+    const canvas = await html2canvas(element, {
+      scale: 6,
+      backgroundColor: "#ffffff",
+      useCORS: true,
+      width: element.offsetWidth,
+      height: element.offsetHeight,
     });
 
-    for (let i = 0; i < printCount; i++) {
-      pdf.addImage(
-        imgData,
-        "PNG",
-        0,
-        i * stickerHeight,
-        stickerWidth,
-        stickerHeight
-      );
-    }
+    const imgData = canvas.toDataURL("image/png");
 
-    pdf.save("stickers.pdf");
+    const labelWidth = 58;
+    const labelHeight = 40;
+
+    const pdf = new jsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: [labelWidth, labelHeight],
+    });
+
+    pdf.addImage(imgData, "PNG", 0, 0, labelWidth, labelHeight);
+
+    pdf.save(`${product.name}.pdf`);
   };
-
   return (
     <div className="min-h-screen bg-gray-100 p-4">
 
@@ -141,40 +137,113 @@ export default function AddStock() {
       {qr && product && (
         <div className="mt-6 flex flex-col items-center">
 
-          {/* Selector */}
-          <select
-            value={printCount}
-            onChange={(e) => setPrintCount(Number(e.target.value))}
-            className="mb-4 border p-2 rounded"
-          >
-            <option value={1}>1 Sticker</option>
-            <option value={2}>2 Stickers</option>
-            <option value={4}>4 Stickers</option>
-            <option value={6}>6 Stickers</option>
-            <option value={8}>8 Stickers</option>
-          </select>
 
           {/* Sticker Preview */}
           <div className="bg-white rounded-xl shadow p-6 flex justify-center mb-4">
-
             <div
               ref={stickerRef}
-              className="border w-[240px] p-2 text-center bg-white"
+              style={{
+                width: "58mm",
+                height: "40mm",
+                background: "#fff",
+                // border: "1px solid black",
+                paddingTop: "0.5mm",
+                paddingLeft: "3mm",
+                paddingRight: "3mm",
+                paddingBottom: "3mm",
+                boxSizing: "border-box",
+                display: "flex",
+                flexDirection: "column",
+              }}
             >
-              <h2 className="font-bold text-lg">
+              {/* Shop Name */}
+              <div
+                style={{
+                  fontSize: "23px",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  // borderBottom: "1px solid #000",
+                  paddingBottom: "3px",
+                  marginBottom: "5px",
+                  lineHeight: "1",
+                }}
+              >
                 KGN COLLECTION
-              </h2>
+              </div>
 
-              <p className="text-sm">
-                {product.name}
-              </p>
+              {/* Bottom row */}
+              <div
+                style={{
+                  display: "flex",
+                  flex: 1,
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                {/* Left: product + MRP */}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    gap: "3px",
+                    height: "100%",
+                    maxWidth: "30mm",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "13px",
+                      fontWeight: "600",
+                      wordBreak: "break-word",
+                      lineHeight: "1.3",
+                      transform: "translateY(-16px)",
 
-              <p className="font-bold text-lg">
-                ₹{product.price}
-              </p>
+                    }}
+                  >
+                    {product.name}
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "0px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "11px",
+                        color: "#555",
+                        lineHeight: "1",
+                        transform: "translateY(-3px)",
+                      }}
+                    >
+                      MRP
+                    </div>
 
-              <div className="flex justify-center mt-2">
-                <img src={qr} alt="QR" className="w-24" />
+                    <div
+                      style={{
+                        fontSize: "39px",
+                        fontWeight: "bold",
+                        lineHeight: "0.8",
+                        transform: "translateY(-6px)",
+                      }}
+                    >
+                      ₹{product.price}
+                    </div>
+                  </div>
+                </div>
+
+                {/* QR */}
+                <img
+                  src={qr}
+                  alt="QR"
+                  style={{
+                    width: "30mm",
+                    height: "30mm",
+                    objectFit: "contain",
+                  }}
+                />
               </div>
             </div>
 
@@ -189,8 +258,9 @@ export default function AddStock() {
           </button>
 
         </div>
-      )}
+      )
+      }
 
-    </div>
+    </div >
   );
 }

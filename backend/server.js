@@ -15,7 +15,12 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URI,
+    credentials: true,
+  })
+);
 app.use(express.json());
 //This tells Express:
 //“Any request that starts with /api/auth should go inside authRoutes.js”
