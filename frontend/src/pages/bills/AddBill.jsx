@@ -49,8 +49,8 @@ export default function AddBill() {
   };
   // remove
   const removeItem = (index) => {
-  setItems((prev) => prev.filter((_, i) => i !== index));
-};
+    setItems((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const calculateRate = (mrp, discount) => {
     return mrp - (mrp * discount / 100);
@@ -128,7 +128,7 @@ export default function AddBill() {
 
       const res = await api.post("/bills", billData);
 
-      console.log("Bill Created:", res.data);
+      //   console.log("Bill Created:", res.data);
 
       navigate("/bills");
 
@@ -142,29 +142,29 @@ export default function AddBill() {
   const scanLockRef = useRef(false);
 
   const handleScan = async (code) => {
-  if (scanLockRef.current) return;
-  scanLockRef.current = true;
+    if (scanLockRef.current) return;
+    scanLockRef.current = true;
 
-  try {
-    const res = await api.get(`/products/${code}`);
-    addToCart(res.data.product);
+    try {
+      const res = await api.get(`/products/${code}`);
+      addToCart(res.data.product);
 
-    //  PLAY BEEP
-    beepRef.current.currentTime = 0;
-    beepRef.current.play().catch(() => {});
+      //  PLAY BEEP
+      beepRef.current.currentTime = 0;
+      beepRef.current.play().catch(() => { });
 
-  } catch {
-    alert("Product not found");
-  }
+    } catch {
+      alert("Product not found");
+    }
 
-  setTimeout(() => {
-    scanLockRef.current = false;
-  }, 800);
-};
+    setTimeout(() => {
+      scanLockRef.current = false;
+    }, 800);
+  };
 
   return (
 
-<div className="min-h-screen bg-gray-100 px-4 py-6 pb-20">
+    <div className="min-h-screen bg-gray-100 px-4 py-6 pb-20">
 
       <div className="max-w-xl mx-auto">
 
@@ -250,28 +250,28 @@ export default function AddBill() {
           {/* Items Section */}
           <div className="bg-white rounded-xl shadow p-4 mb-4">
 
-           <p className="font-semibold text-gray-800 mb-3">Scan Product</p>
+            <p className="font-semibold text-gray-800 mb-3">Scan Product</p>
 
-{mode === "scan" && (
-  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
+            {mode === "scan" && (
+              <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4">
 
-    {/* HEADER */}
-    <div className="flex justify-between items-center mb-3">
-      <p className="text-sm text-gray-600">
-        📷 Align QR code inside the box
-      </p>
+                {/* HEADER */}
+                <div className="flex justify-between items-center mb-3">
+                  <p className="text-sm text-gray-600">
+                    📷 Align QR code inside the box
+                  </p>
 
-      
-    </div>
 
-    {/* SCANNER BOX */}
-    <div className="rounded-lg overflow-hidden border border-gray-300">
-      <Scanner onScanSuccess={handleScan} />
-    </div>
+                </div>
 
-  </div>
-)}
-<br></br>
+                {/* SCANNER BOX */}
+                <div className="rounded-lg overflow-hidden border border-gray-300">
+                  <Scanner onScanSuccess={handleScan} />
+                </div>
+
+              </div>
+            )}
+            <br></br>
             {/* Header Row */}
             <div className="grid grid-cols-[1.5fr_0.8fr_1.2fr_0.8fr_1fr_1fr_0.5fr]  mb-2 text-xs font-semibold text-gray-500 border-b pb-2">
               <div className="px-2">Item</div>
@@ -283,7 +283,7 @@ export default function AddBill() {
               <div></div>
             </div>
 
-            
+
 
             {items.map((item, index) => {
 
@@ -298,15 +298,15 @@ export default function AddBill() {
                       name="itemName"
                       value={item.itemName}
                       onChange={(e) => handleItemChange(index, e)}
-className="border p-2 text-xs w-full max-w-[90px] rounded-lg"
-                 />
+                      className="border p-2 text-xs w-full max-w-[90px] rounded-lg"
+                    />
                   ) : (
-<div
-  title={item.itemName}
-  className="text-sm px-2 truncate whitespace-nowrap overflow-hidden max-w-[90px]"
->
-  {item.itemName}
-</div>               )}
+                    <div
+                      title={item.itemName}
+                      className="text-sm px-2 truncate whitespace-nowrap overflow-hidden max-w-[90px]"
+                    >
+                      {item.itemName}
+                    </div>)}
 
                   <input
                     name="qty"
@@ -322,8 +322,8 @@ className="border p-2 text-xs w-full max-w-[90px] rounded-lg"
                     type="number"
                     value={item.mrp}
                     onChange={(e) => handleItemChange(index, e)}
-                   // disabled={mode === "scan"}
-className="border border-gray-300 rounded-lg p-2 text-xs text-center w-[50px]"                 />
+                    // disabled={mode === "scan"}
+                    className="border border-gray-300 rounded-lg p-2 text-xs text-center w-[50px]" />
 
                   <input
                     name="discount"
@@ -331,7 +331,7 @@ className="border border-gray-300 rounded-lg p-2 text-xs text-center w-[50px]"  
                     value={item.discount}
                     onChange={(e) => handleItemChange(index, e)}
                     //disabled={mode === "scan"}
-className="border border-gray-300 rounded-lg p-2 text-xs text-center max-w-[35px]"
+                    className="border border-gray-300 rounded-lg p-2 text-xs text-center max-w-[35px]"
                   />
 
                   <div className="text-center text-xs text-gray-700 font-mono">
@@ -342,17 +342,17 @@ className="border border-gray-300 rounded-lg p-2 text-xs text-center max-w-[35px
                     ₹{amount.toFixed(0)}
                   </div>
                   <button
-  type="button"
-  onClick={() => removeItem(index)}
-  className="text-red-500 hover:text-red-700 text-sm"
->
-  ✕
-</button>
+                    type="button"
+                    onClick={() => removeItem(index)}
+                    className="text-red-500 hover:text-red-700 text-sm"
+                  >
+                    ✕
+                  </button>
 
                 </div>
-                
+
               );
-              
+
             })}
 
             {mode === "manual" && (
@@ -402,9 +402,13 @@ className="border border-gray-300 rounded-lg p-2 text-xs text-center max-w-[35px
           <button
             disabled={isSubmitting}
             type="submit"
-            className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium shadow transition"
+            className={`w-full py-3 text-white rounded-lg font-medium shadow transition
+    ${isSubmitting
+                ? "bg-green-400 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
+              }`}
           >
-            Create Bill
+            {isSubmitting ? "Creating Bill..." : "Create Bill"}
           </button>
 
         </form>

@@ -36,6 +36,7 @@ import BillPrint from "./pages/bills/BillPrint";
 import EditBill from "./pages/bills/EditBill";
 
 import StockPage from "./pages/products/StockPage";
+import ProductDetail from "./pages/products/ProductDetail";
 
 export default function App() {
   return (
@@ -75,7 +76,7 @@ export default function App() {
         <Route path="/addstock" element={<ProtectedRoute><AddStock/></ProtectedRoute>} />
 
         <Route path="/stocks" element={<ProtectedRoute><StockPage/></ProtectedRoute>} />
-
+        <Route path="/products/:id" element={<ProductDetail />} />
 
         {/* Redirect base route */}
         <Route path="*" element={<Navigate to="/login" />} />

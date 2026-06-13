@@ -11,12 +11,18 @@ export default function AddStock() {
   const [qr, setQr] = useState("");
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(0);
+  const [isAddingStock, setIsAddingStock] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const stickerRef = useRef();
 
-  // 🔹 Submit Stock
+  // Submit Stock
   const onSubmit = async (data) => {
+    if (isAddingStock) return;
+
     try {
+      setIsAddingStock(true);
+
       const res = await api.post("/products", {
         ...data,
         price: Number(data.price),
@@ -32,39 +38,55 @@ export default function AddStock() {
       reset();
 
       alert("Stock added successfully");
-
     } catch (err) {
       console.log(err.response?.data || err.message);
       alert("Error adding stock");
+    } finally {
+      setIsAddingStock(false);
     }
   };
 
   //Print Stickers (PDF)
   const downloadSticker = async () => {
-    const element = stickerRef.current;
+    if (isDownloading) return;
 
-    const canvas = await html2canvas(element, {
-      scale: 6,
-      backgroundColor: "#ffffff",
-      useCORS: true,
-      width: element.offsetWidth,
-      height: element.offsetHeight,
-    });
+    try {
+      setIsDownloading(true);
 
-    const imgData = canvas.toDataURL("image/png");
+      const element = stickerRef.current;
 
-    const labelWidth = 58;
-    const labelHeight = 40;
+      const canvas = await html2canvas(element, {
+        scale: 6,
+        backgroundColor: "#ffffff",
+        useCORS: true,
+        width: element.offsetWidth,
+        height: element.offsetHeight,
+      });
 
-    const pdf = new jsPDF({
-      orientation: "landscape",
-      unit: "mm",
-      format: [labelWidth, labelHeight],
-    });
+      const imgData = canvas.toDataURL("image/png");
 
-    pdf.addImage(imgData, "PNG", 0, 0, labelWidth, labelHeight);
+      const labelWidth = 58;
+      const labelHeight = 40;
 
-    pdf.save(`${product.name}.pdf`);
+      const pdf = new jsPDF({
+        orientation: "landscape",
+        unit: "mm",
+        format: [labelWidth, labelHeight],
+      });
+
+      pdf.addImage(
+        imgData,
+        "PNG",
+        0,
+        0,
+        labelWidth,
+        labelHeight
+      );
+
+      pdf.save(`${product.name}.pdf`);
+    } finally {
+      setIsDownloading(false);
+    }
   };
   return (
     <div className="min-h-screen bg-gray-100 p-4">
@@ -125,8 +147,15 @@ export default function AddStock() {
             className="w-full border p-2 rounded"
           />
 
-          <button className="w-full bg-green-600 text-white p-2 rounded">
-            Add Stock
+          <button
+            disabled={isAddingStock}
+            className={`w-full text-white p-2 rounded
+    ${isAddingStock
+                ? "bg-green-400 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
+              }`}
+          >
+            {isAddingStock ? "Adding Stock..." : "Add Stock"}
           </button>
 
         </form>
@@ -253,9 +282,16 @@ export default function AddStock() {
           {/* Print Button */}
           <button
             onClick={downloadSticker}
-            className="bg-blue-600 text-white px-6 py-2 rounded"
+            disabled={isDownloading}
+            className={`text-white px-6 py-2 rounded
+    ${isDownloading
+                ? "bg-blue-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+              }`}
           >
-            Download Stickers PDF
+            {isDownloading
+              ? "Generating PDF..."
+              : "Download Stickers PDF"}
           </button>
 
         </div>
