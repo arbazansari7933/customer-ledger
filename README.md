@@ -486,4 +486,279 @@ All routes are prefixed with `/api`. 🔒 = requires a valid JWT (`authMiddlewar
 | PUT | `/:wholesalerId` | 🔒👑 | Edit name/phone/address | `{ name, phone, address }` | `200` `{ message, updatedwholesaler }` |
 | DELETE | `/:wholesalerId` | 🔒👑 | Delete a wholesaler | `wholesalerId` (path) | `200` `{ message, wholesaler }` |
 | POST | `/:wholesalerId/transactions` | 🔒👑 | Add a ledger transaction (inverted give/receive logic vs. customer) | `{ amount, type, note }` | `200` `{ message, wholesaler }` |
-| GET | `/:wholesalerId/transactions/:transactionId` | 🔒
+| GET | `/:wholesalerId/transactions/:transactionId` | 🔒 | Single transaction | path params | `200` `{ message, transaction }` |
+| PUT | `/:wholesalerId/transactions/:transactionId` | 🔒👑 | Edit a transaction, recalculates balance | `{ amount, type, note }` | `200` `{ message, wholesaler }` |
+| DELETE | `/:wholesalerId/transactions/:transactionId` | 🔒👑 | Delete a transaction, recalculates balance | path params | `200` `{ message, wholesaler }` |
+
+### Reports — `/api/reports`
+
+| Method | Endpoint | Auth | Description | Body | Success Response |
+|---|---|---|---|---|---|
+| POST | `/` | 🔒 | All bills created on a given calendar day (00:00–23:59 local) | `{ selectedDate }` | `200` `[bills]` |
+
+### Backup — `/api`
+
+| Method | Endpoint | Auth | Description | Body | Success Response |
+|---|---|---|---|---|---|
+| GET | `/backup` | Public* | Downloads a JSON dump of all collections | — | `200` file download (`backup.json`) |
+| POST | `/restore` | 🔒👑 | Wipes and re-inserts all collections from an uploaded JSON file | multipart `file` | `200` `{ message }` |
+
+\* Note: the download route (`/backup`) is **not** wrapped in `authMiddleware`, unlike restore — see [Code Review Suggestions](#code-review-suggestions).
+
+### Health check
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/api` | Returns `"Backend is running!"` |
+
+---
+
+## Folder Structure
+
+```
+customer-ledger-master/
+├── backend/
+│   ├── config/
+│   │   └── db.js                  # MongoDB connection (mongoose.connect)
+│   ├── controllers/
+│   │   ├── authController.js      # register, login
+│   │   ├── billController.js      # create/list/detail/update/delete bill
+│   │   ├── customerController.js  # CRUD + transactions/ledger
+│   │   ├── wholesalerController.js# CRUD + transactions/ledger
+│   │   ├── productController.js   # CRUD + stock + QR generation
+│   │   ├── reportController.js    # daily sales report
+│   │   └── backupController.js    # JSON export/import
+│   ├── middlewares/
+│   │   ├── authMiddleware.js      # JWT verification, attaches req.user
+│   │   └── roleMiddleware.js      # checkRole([...]) route guard
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Product.js
+│   │   ├── Bill.js
+│   │   ├── Customer.js
+│   │   └── Wholesaler.js
+│   ├── routes/                    # one router per resource, mounted in server.js
+│   ├── utils/
+│   │   └── generateQR.js          # qrcode wrapper
+│   ├── uploads/                   # multer destination for backup-restore files
+│   └── server.js                  # app bootstrap, CORS, route mounting
+│
+└── frontend/
+    ├── public/
+    │   ├── manifest.json          # PWA manifest
+    │   ├── sw.js                  # service worker (minimal stub)
+    │   └── beep.mp3               # scan confirmation sound
+    └── src/
+        ├── components/            # Navbar, BottomNavbar, Scanner, cards, ProtectedRoute
+        ├── pages/
+        │   ├── bills/             # AddBill (scan/manual), BillDetails, BillPrint, EditBill, BillsDashboard
+        │   ├── customers/         # Dashboard, Add/Edit/Details, Add/Edit/Details Transaction
+        │   ├── wholesalers/       # mirror of customers/
+        │   ├── products/          # AddStock (QR + sticker), StockPage, ProductDetail
+        │   ├── StickerGenerator.jsx
+        │   ├── Reports.jsx
+        │   ├── Settings.jsx       # Backup/Restore + account
+        │   └── PurchaseCalculator.jsx
+        ├── utils/
+        │   └── api.js             # axios instance, JWT interceptor, 401 handler
+        ├── App.jsx                # route table
+        └── main.jsx                # app entry, BrowserRouter, service worker registration
+```
+
+---
+
+## Installation
+
+**Prerequisites:** Node.js 18+, npm, and a MongoDB instance (local or Atlas).
+
+```bash
+git clone https://github.com/arbazansari7933/customer-ledger.git
+cd customer-ledger
+```
+
+### Backend
+
+```bash
+cd backend
+npm install
+```
+
+Create `backend/.env` (see [Environment Variables](#environment-variables) for full details), then:
+
+```bash
+npm run dev      # nodemon, auto-restarts on change
+# or
+npm start        # plain node
+```
+
+The API starts on `http://localhost:<PORT>/api` (default `5000`).
+
+### Frontend
+
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
+
+The app runs at `http://localhost:5173`.
+
+> ⚠️ The frontend currently talks to a **hardcoded** backend URL rather than an environment variable — see [Environment Variables](#environment-variables) and [Code Review Suggestions](#code-review-suggestions) before running locally against your own backend.
+
+---
+
+## Environment Variables
+
+### Backend (`backend/.env`)
+
+```env
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/kgn-collection
+JWT_SECRET=replace_with_a_long_random_string
+CLIENT_URI=http://localhost:5173
+OWNER_SECRET=replace_with_a_private_invite_code
+```
+
+| Variable | Used in | Purpose |
+|---|---|---|
+| `PORT` | `server.js` | Port the Express server listens on (falls back to `5000`) |
+| `MONGO_URI` | `config/db.js` | MongoDB connection string |
+| `JWT_SECRET` | `authController.js`, `authMiddleware.js` | Signs and verifies JWTs |
+| `CLIENT_URI` | `server.js` | Comma-separated list of allowed CORS origins — **required**, `server.js` calls `.split(",")` on it directly with no fallback |
+| `OWNER_SECRET` | `authController.js` | Invite code that force-assigns the `owner` role at signup |
+
+### Frontend
+
+There is currently **no `.env` file or `import.meta.env` variable used** by the frontend. `src/utils/api.js` hardcodes the API base URL:
+
+```js
+baseURL: process.env.NODE_ENV === "production"
+  ? "https://customer-ledger-backend.onrender.com/api"
+  : "http://localhost:5000/api"
+```
+
+To point the frontend at a different backend, this value currently has to be edited directly in `src/utils/api.js` (see [Code Review Suggestions](#code-review-suggestions) for a recommended fix using Vite's `VITE_`-prefixed env vars).
+
+---
+
+## Deployment
+
+| Layer | Provider | Notes |
+|---|---|---|
+| Frontend | Vercel | `vercel.json` rewrites all routes to `index.html` for client-side routing |
+| Backend | Render | Node/Express service; `CLIENT_URI` must include the deployed Vercel origin |
+| Database | MongoDB Atlas | Connection string supplied via `MONGO_URI` |
+
+**Production build:**
+
+```bash
+# frontend
+cd frontend
+npm run build      # outputs to dist/
+```
+
+Deploy `frontend/dist` to Vercel (or any static host) and `backend/` as a Node web service to Render, setting the five backend environment variables in the Render dashboard. Because the API base URL is currently hardcoded (see above), redeploying the backend to a different domain requires a matching code change in `src/utils/api.js`, not just an environment variable update.
+
+---
+
+## Engineering Decisions
+
+**Why QR codes instead of manual billing** — Typing product names and prices at the counter is slow and error-prone during a rush. A camera scan is near-instant, removes typos, and lets any employee bill correctly without memorizing prices.
+
+**Why JWT authentication** — The frontend and backend are fully decoupled (different hosts, Vercel vs. Render), so a stateless, header-based auth scheme avoids the complexity of shared server-side sessions/cookies across origins.
+
+**Why MongoDB** — Bills and ledgers are naturally document-shaped (a bill "owns" its line items; a customer "owns" their transaction history). Embedding `items[]` in `Bill` and `transaction[]` in `Customer`/`Wholesaler` keeps a bill or a ledger readable in a single query, which matches how the UI consumes them.
+
+**Why automatic inventory deduction** — Manual stock updates get forgotten during a busy shift. Deducting stock as part of the same request that creates the bill guarantees stock and sales never fall out of sync.
+
+**Why balance recalculation instead of incremental updates** — see [Customer & Wholesaler Ledger](#customer--wholesaler-ledger) above: recalculating from the transaction array on every write makes the balance a derived, self-correcting value instead of a counter that can drift.
+
+**Why PWA** — The shop uses a phone/tablet at the counter. Installing to the home screen gives an app-like, full-screen experience without needing an app store listing.
+
+**Why PDF generation for bills and stickers** — `html2canvas` + `jsPDF` let the exact same styled HTML that's already rendered in the browser be turned into a print-ready file sized to real thermal paper/label dimensions (80mm bills, 58–60mm stickers), without maintaining a separate print template engine.
+
+---
+
+## Challenges Solved
+
+- **Manual retail billing** — replaced with scan-to-bill, cutting per-item entry time and typos.
+- **Inventory synchronization** — stock is deducted transactionally as part of bill creation, not as a separate manual step.
+- **Duplicate QR scans** — solved with a scan-lock cooldown and an "increment existing cart line" rule instead of adding a new row.
+- **Automatic ledger updates** — a due bill automatically finds-or-creates the customer and appends a ledger entry, with no manual bookkeeping step.
+- **Balance drift** — solved by recalculating balances from the full transaction history rather than incrementing/decrementing a stored counter.
+- **Mobile-first usability** — bottom tab navigation, large touch targets, and a scan-mode toggle designed around a phone/tablet at a shop counter, not a desktop back-office.
+- **Offline safety net on free hosting** — the backup/restore JSON export exists specifically because the shop runs on free-tier hosting where data loss risk (cold starts, plan resets) is non-trivial.
+
+---
+
+## Known Limitations
+
+These are things the app does not yet do, as opposed to bugs in what it does do (those are listed separately below):
+
+- No pagination on customers, wholesalers, bills, or product lists — everything loads in one query.
+- No low-stock notification/alert view, even though the `lowStockAlert` field exists on every product.
+- "Shop Information" and "Bill Preferences" in Settings are non-functional placeholders.
+- The standalone Sticker Generator page produces a decorative pattern, not a real scannable code.
+- Service worker does not cache anything, so the PWA is installable but not usable offline.
+- No automated tests, CI/CD pipeline, or TypeScript.
+
+---
+
+## Future Improvements
+
+- Wire up real caching in the service worker for genuine offline support
+- Surface a low-stock dashboard/alert using the existing `lowStockAlert` field
+- Add pagination and server-side search/filtering to list endpoints
+- Re-enable and finish the ownership-based (`createdBy`) access checks that are currently commented out
+- Barcode/hardware scanner support as an alternative to camera-based scanning
+- WhatsApp bill sharing from the print view
+- Push notifications for overdue customer balances
+- Multi-store support
+- Automated unit/integration tests and a CI/CD pipeline
+- Move the frontend API base URL into a proper Vite environment variable
+
+---
+
+## Code Review Suggestions
+
+> The following are observations from inspecting the source code — reported for awareness, not applied to the code or to the feature list above.
+
+1. **`Bill.items` schema is missing the `productId` field.** `billController.js` builds each processed item with `productId: item.productId || null`, and stock deduction during `createBill` correctly uses that value from the *incoming request*. However, `models/Bill.js`'s `itemSchema` does not declare a `productId` field, so Mongoose (strict mode by default) silently drops it when the `Bill` document is saved. The result: stock deduction works correctly at creation time, but the **persisted bill has no link back to the product** — which will surface as a real bug the moment any feature needs to look up "what product was this line item" from a saved bill (e.g. returns, per-product sales analytics, re-printing with live product data).
+
+2. **`deleteBill` does not reverse the customer's ledger balance.** If a due bill created a ledger transaction for a customer and that bill is later deleted, the corresponding `give` transaction remains in the customer's `transaction[]` array and their `balance` is never adjusted — the customer will still show as owing money for a bill that no longer exists.
+
+3. **`updateBill` doesn't reconcile stock.** Editing a bill's `items`/`total`/`paid`/`due` overwrites the bill document directly but never re-validates or adjusts `Product.stock` for the difference between old and new quantities — a bill edited to a higher quantity does not deduct the extra stock, and an edit to a lower quantity does not return stock.
+
+4. **Frontend API base URL is hardcoded**, and the check used to select it (`process.env.NODE_ENV === "production"`) is a Node-style check, not Vite's `import.meta.env.MODE`/`import.meta.env.PROD`. It happens to work because Vite statically replaces `process.env.NODE_ENV`, but there's no `.env`/`VITE_API_URL` mechanism at all — anyone forking the project or standing up a second environment (staging, a different Render URL) has to edit `src/utils/api.js` directly.
+
+5. **Ownership checks are commented out across `customerController.js` and `wholesalerController.js`.** Every controller has a commented `if (req.user.role !== "owner" && record.createdBy.toString() !== req.user._id.toString())` block. As shipped, any authenticated user with the right role can view/edit/delete *any* customer, wholesaler, or transaction — the `createdBy` field is recorded but not enforced.
+
+6. **`GET /api/backup` has no auth middleware**, unlike `POST /api/restore` which requires `owner`. Anyone who can reach the backend URL can currently download a full JSON export of every user (including hashed passwords), bill, customer, and wholesaler without authenticating.
+
+7. **`.gitignore` does not exclude `.env` files.** No `.env` is currently committed in this snapshot, but the `.gitignore` in both `backend/` and `frontend/` has no `.env` rule, which is a latent risk if a `.env` is ever added without remembering to exclude it manually.
+
+8. **Two separate, disconnected "sticker generator" implementations exist** — the functional one inside `AddStock.jsx` (real QR, hits the backend) and the standalone `StickerGenerator.jsx` page (fake bar pattern, no backend call, duplicate sticker-layout logic). This is likely to confuse both users (which one makes a *real* scannable sticker?) and future maintainers (two copies of similar PDF/canvas logic to keep in sync).
+
+9. **`reportController.js`'s date range mutates the same `Date` object twice** (`date.setHours(0,0,0,0)` then `date.setHours(23,59,59,999)` on the *same* `date` instance) — this happens to work here only because both calls read into separate `start`/`end` `Date` wrappers before the second mutation, but it's a fragile pattern that would break if reordered.
+
+10. **No server-side validation on transaction `type`.** `addTransaction`/`editTransaction` for both customers and wholesalers only check `if (!amount || !type)`, not that `type` is actually `"give"` or `"receive"` — an unexpected string would silently fail to match either branch in the balance-update logic and leave the balance calculation wrong for that entry without any error being raised.
+
+11. **Minor:** `MainDashboard.jsx`-style routes mix `<ProtectedRoute>` inconsistently — `/purchase-calculator` and `/products/:id` are the only two authenticated-feeling pages mounted **without** `ProtectedRoute` in `App.jsx`, while every functionally similar page is wrapped. Likely an oversight rather than an intentional public route.
+
+---
+
+## Author
+
+**Arbaz Ansari**
+B.Tech Computer Science Engineering
+
+Built for KGN Collection, a real retail shop currently using this system in production.
+
+- GitHub: [arbazansari7933](https://github.com/arbazansari7933)
+- LinkedIn: [Arbaz Ansari](https://linkedin.com/in/arbaz-ansari-48b634330/)
+
+---
+
+## License
+
+MIT
